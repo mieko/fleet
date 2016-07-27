@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+RUNLEVEL=1 sudo -E apt-get -y install stunnel4
+
+sudo mkdir -p /etc/stunnel/certs
+sudo mkdir -p /etc/stunnel/keys
+sudo cp files/metermd-ca.crt /etc/stunnel/certs
+sudo cp files/stunnel/global.conf /etc/stunnel
+
+
+sudo sed -i.bak -e 's/^ENABLED=0/ENABLED=1/' /etc/default/stunnel4
+sudo systemctl enable stunnel4.service
+sudo systemctl start stunnel4.service

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+sudo cp files/stunnel/redis-client.conf /etc/stunnel/
+
+sudo cp files/redis-client.crt /etc/stunnel/certs/
+sudo cp files/redis-client.key /etc/stunnel/keys/
+
+sudo chown stunnel4:nogroup /etc/stunnel/keys/redis-client.key
+sudo chmod u=rw,go= /etc/stunnel/keys/redis-client.key

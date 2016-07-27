@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Looks for attached storage and mounts them in /mnt.
+
+# As a bonus: Any unformatted volumes that are attached are formatted to ext4.
+# we consider a volume with a leading 1MB of \0's as blank.
+#
+# Volumes are added to the fstab, so they'll re-mount on reboot.
+
+PREFIX="/dev/disk/by-id/scsi-0DO_Volume_"
+
+for DISK in "$PREFIX"* ; do
+  # If the first 1MB is blank, we're considering this blank.
+  if sudo cmp -s -n $((1024 * 1024)) "$DISK" /dev/zero ; then
+    sudo mkfs.ext4 -F "$DISK"
+  fi
+
+  VOLUME_NAME=$(echo "$DISK" | sed -e "s|^$PREFIX||")
+  VOLUME="/mnt/$VOLUME_NAME"
+
+  sudo mkdir -p "$VOLUME"
+
+  echo "$DISK $VOLUME ext4 defaults,nofail,discard 0 0" \
+    | sudo tee -a /etc/fstab
+
+  sudo mount "$VOLUME"
+done

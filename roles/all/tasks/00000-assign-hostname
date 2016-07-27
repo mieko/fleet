@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+sudo hostname <%= node[:hostname] %>
+echo $(hostname) | sudo tee /etc/hostname
+
+# Make sure we can actually see it:
+cat - <<BASH | sudo tee -a /etc/bash.bashrc
+export PS1='\u@\H:\w\$ '
+BASH

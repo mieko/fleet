@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# We never run a postgres DB on a VM disk, only on attached storage.
+# At this point, we should have /mnt/db([0-9]+) available, and it's
+# either INITIALIZED (has a postgres dir) or not.
+
+# If it's INITIALIZED, we just point our links to it, and the local PG
+# installation works like normal.
+
+DB_VOLUMES=/mnt/db*
+DB_VOLUME=
+INITIALIZED=
+
+for i in $DB_VOLUMES; do
+  if [ -d "$i/postgresql" ]; then
+    DB_VOLUME=$i
+    INITIALIZED=1
+    break
+  fi
+done
+
+if [ -z "$DB_VOLUME" ]; then
+  if [ ! -z "$DB_VOLUMES" ]; then
+    set -- $DB_VOLUMES
+    DB_VOLUME=$1
+  fi
+fi
+
+echo "Volume: $DB_VOLUME; init? $INITIALIZED"
+
+if [ -z $INITIALIZED ]; then
+  # We initialize the network storage installation with the normal install...
+  cp -aRv '/var/lib/postgresql' "$DB_VOLUME"
+  cp -aRv '/etc/postgresql' "$DB_VOLUME/postgresql/etc"
+  cp -aRv '/etc/postgresql-common' "$DB_VOLUME/postgresql/etc-common"
+else
+
+# move the normal install aside, and link to the external disk.
+mv '/var/lib/postgresql' '/var/lib/postgresql-debian'
+ln -s "$DB_VOLUME/postgresql" '/var/lib'
+
+mv '/etc/postgresql' '/etc/postgresql-debian'
+ln -s "$DB_VOLUME/postgresql/etc" "/etc/postgresql"
+
+mv '/etc/postgresql-common' '/etc/postgresql-common-debian'
+ln -s "$DB_VOLUME/postgresql/etc-common" "/etc/postgresql-common"

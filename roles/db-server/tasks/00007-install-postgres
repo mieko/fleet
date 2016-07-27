@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+# We don't want postgres to start when it is installed, because we have a
+# configuration for it.  RUNLEVEL=1 accomplishes this.
+RUNLEVEL=1 sudo -E apt-get install -y \
+   postgresql-9.5 postgresql-9.5-ip4r postgresql-9.5-prefix \
+   postgresql-9.5-postgis-2.2 postgresql-9.5-pgrouting

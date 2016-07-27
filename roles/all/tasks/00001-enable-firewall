@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+sudo apt-get -y install ufw
+
+echo 'IPV6=yes' | sudo tee -a /etc/default/ufw
+
+sudo ufw --force reset
+sudo ufw default deny incoming
+sudo ufw default deny outgoing
+
+sudo ufw allow in ssh
+sudo ufw allow out domain   # AKA DNS
+sudo ufw allow out http     # Ubuntu packages
+sudo ufw allow out https    # Ubuntu packages
+sudo ufw allow out git      # For bundler
+
+sudo ufw --force enable
