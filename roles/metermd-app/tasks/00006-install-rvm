@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 cat <<BASH | sudo -i -u metermd bash -s
   gpg --keyserver hkp://keys.gnupg.net \

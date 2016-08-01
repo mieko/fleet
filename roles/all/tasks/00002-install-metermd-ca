@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 sudo cp metermd-ca.crt /usr/local/share/ca-certificates/
 sudo update-ca-certificates
