@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+set -e
+
 sudo cp files/stunnel/redis-client.conf /etc/stunnel/
 
 sudo cp files/redis-client.crt /etc/stunnel/certs/

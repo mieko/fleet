@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 sudo hostname <%= node[:hostname] %>
 echo $(hostname) | sudo tee /etc/hostname

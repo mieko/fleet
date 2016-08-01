@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 sudo adduser --disabled-password \
              --gecos 'meter.md app server' \
