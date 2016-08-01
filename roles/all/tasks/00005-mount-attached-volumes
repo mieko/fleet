@@ -11,7 +11,7 @@ PREFIX="/dev/disk/by-id/scsi-0DO_Volume_"
 
 for DISK in "$PREFIX"* ; do
   # If the first 1MB is blank, we're considering this blank.
-  if sudo cmp -s -n $((1024 * 1024)) "$DISK" /dev/zero ; then
+  if sudo cmp -s -n  $((1024 * 1024)) "$DISK" /dev/zero ; then
     sudo mkfs.ext4 -F "$DISK"
   fi
 
@@ -20,7 +20,7 @@ for DISK in "$PREFIX"* ; do
 
   sudo mkdir -p "$VOLUME"
 
-  echo "$DISK $VOLUME ext4 defaults,nofail,discard 0 0" \
+  echo "$DISK $VOLUME ext4 auto,defaults,nofail,discard 0 0" \
     | sudo tee -a /etc/fstab
 
   sudo mount "$VOLUME"
