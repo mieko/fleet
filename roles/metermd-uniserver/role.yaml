@@ -1,0 +1,5 @@
+includes:
+  - metermd-app
+  - httpd
+  - db-server-master
+  - redis-server

@@ -1,0 +1,2 @@
+includes:
+  - redis-client
