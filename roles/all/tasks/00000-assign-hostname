@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-sudo hostname <%= node[:hostname] %>
+sudo hostname <%= node.name.sq %>
 echo $(hostname) | sudo tee /etc/hostname
 
 # Make sure we can actually see it:
