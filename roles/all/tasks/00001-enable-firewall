@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-echo 'IPV6=yes' | sudo tee -a /etc/default/ufw
+echo 'IPV6=yes' | sudo tee -a /etc/default/ufw > /dev/null
 
 sudo ufw --force reset
 sudo ufw default deny incoming

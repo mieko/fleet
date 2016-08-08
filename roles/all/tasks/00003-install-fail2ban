@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-sudo apt-get -y install fail2ban
+sudo apt-get -yqq install fail2ban

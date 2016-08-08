@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 set -e
 
-RUNLEVEL=1 sudo -E apt-get install -y redis-server
+RUNLEVEL=1 sudo -E apt-get -yqq install redis-server
 
 sudo sed -i.bak -e 's/^port .*/port 0/;
-                    s/^# maxclients .*/maxclients 300/;
-                    s/^#unixsocket/unixsocket/;
+                    s/^#\s*maxclients .*/maxclients 300/;
+                    s/^#\s*unixsocket/unixsocket/;
                     s/^bind /#bind /;' /etc/redis/redis.conf
 
 sudo systemctl start redis-server

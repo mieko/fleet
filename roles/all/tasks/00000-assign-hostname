@@ -2,9 +2,9 @@
 set -e
 
 sudo hostname <%= node.name.sq %>
-echo $(hostname) | sudo tee /etc/hostname
+echo $(hostname) | sudo tee /etc/hostname > /dev/null
 
 # Make sure we can actually see it:
-cat - <<BASH | sudo tee -a /etc/bash.bashrc
+cat - <<BASH | sudo tee -a /etc/bash.bashrc > /dev/null
 export PS1='\u@\H:\w\$ '
 BASH

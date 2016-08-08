@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+shopt -s nullglob
 
 # Looks for attached storage and mounts them in /mnt.
 
@@ -22,7 +23,7 @@ for DISK in "$PREFIX"* ; do
   sudo mkdir -p "$VOLUME"
 
   echo "$DISK $VOLUME ext4 auto,defaults,nofail,discard 0 0" \
-    | sudo tee -a /etc/fstab
+    | sudo tee -a /etc/fstab > /dev/null
 
   sudo mount "$VOLUME"
 done

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+set -e
+shopt -s nullglob
+
+# We never run a postgres DB on a VM disk, only on attached storage.
+# At this point, we should have /mnt/db([0-9]+) available, and it's
+# either INITIALIZED (has a postgres dir) or not.
+
+# If it's INITIALIZED, we just point our links to it, and the local PG
+# installation works like normal.
+
+DB_VOLUMES=/mnt/db*
+DB_VOLUME=''
+INITIALIZED=''
+
+for i in $DB_VOLUMES; do
+  if [ -d "$i/postgresql" ]; then
+    DB_VOLUME="$i"
+    INITIALIZED=1
+    break
+  fi
+done
+
+if [ -z "$DB_VOLUME" ]; then
+  if [ ! -z "$DB_VOLUMES" ]; then
+    set -- $DB_VOLUMES
+    DB_VOLUME="$1"
+  fi
+fi
+
+if [ "$DB_VOLUME" != '' -a -z "$INITIALIZED" ]; then
+  echo "Initializing volume: $DB_VOLUME"
+  # We initialize the network storage installation with the normal install...
+  sudo cp -aRv '/var/lib/postgresql' "$DB_VOLUME"
+  sudo cp -aRv '/etc/postgresql' "$DB_VOLUME/postgresql/etc"
+  sudo cp -aRv '/etc/postgresql-common' "$DB_VOLUME/postgresql/etc-common"
+fi
+
+if [ -z "$DB_VOLUME" ]; then
+  echo "No volume in /mnt/db*" >&2
+  exit 1
+fi

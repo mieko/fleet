@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-apt-get install nginx
+sudo apt-get install -yqq nginx

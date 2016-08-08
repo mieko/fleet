@@ -1,4 +1,0 @@
-{
-  "roles": [ "db-client", "httpd", "redis-client" ],
-  "host": "162.243.173.60"
-}
