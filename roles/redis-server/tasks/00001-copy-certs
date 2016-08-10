@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+
+sudo cp files/redis-server.pem /etc/ssl/metermd/
+sudo chown _hitch:_hitch /etc/ssl/metermd/redis-server.pem

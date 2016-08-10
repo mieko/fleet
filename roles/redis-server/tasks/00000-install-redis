@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
+PASSWORD=$(cat files/redis.password)
 RUNLEVEL=1 sudo -E apt-get -yqq install redis-server
 
-sudo sed -i.bak -e 's/^port .*/port 0/;
-                    s/^#\s*maxclients .*/maxclients 300/;
-                    s/^#\s*unixsocket/unixsocket/;
-                    s/^bind /#bind /;' /etc/redis/redis.conf
+sudo sed -i.bak -e "s/^port .*/port 16379/;
+                    s/^bind /bind 127.0.0.1/;
+                    s/^#\s*requirepass .*/requirepass $PASSWORD/;
+                    s/^#\s*maxclients .*/maxclients 300/;" \
+                    /etc/redis/redis.conf
 
 sudo systemctl start redis-server

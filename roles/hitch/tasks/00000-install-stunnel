@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-RUNLEVEL=1 sudo -E apt-get -yqq install hitch
-
-sudo mkdir -p /etc/hitch/certs /etc/hitch/keys
-sudo cp files/hitch.conf /etc/hitch

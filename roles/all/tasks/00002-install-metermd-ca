@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-sudo cp files/metermd-ca.crt /usr/local/share/ca-certificates/
+sudo mkdir -p /etc/ssl/metermd
+sudo cp files/metermd-ca.crt /etc/ssl/metermd
+
+sudo ln -s /etc/ssl/metermd/metermd-ca.crt /usr/local/share/ca-certificates/
+
 sudo update-ca-certificates
