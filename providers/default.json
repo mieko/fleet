@@ -7,7 +7,8 @@
       "image": "ubuntu-16-04-x64",
       "region": "nyc1",
       "ipv6": true,
-      "private_networking": true
+      "private_networking": true,
+      "ssh_keys": [94826]
     }
   }
 }
