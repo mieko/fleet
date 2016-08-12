@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+sudo systemctl enable postgresql.service
+sudo systemctl start postgresql.service

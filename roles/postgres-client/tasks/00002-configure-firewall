@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+set -e
+
+<% %w(ipv4_private ipv6_private).each do |key| %>
+  <% if (addr = node.definition[key]) %>
+    sudo ufw allow out from <%= addr.q %> to any port 5432
+  <% end %>
+<% end %>

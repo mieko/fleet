@@ -5,9 +5,9 @@ shopt -s nullglob
 
 DB_VOLUME=/mnt/db*
 
-if [ -z "$DB_VOLUME" ]; then
-  echo "No attached DB_VOLUME to use." >&2
-  exit 1
+if [ ! -d "$DB_VOLUME" ]; then
+  echo "No attached DB_VOLUME to use."
+  exit 0
 fi
 
 # move the normal install aside, and link to the external disk.

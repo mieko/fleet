@@ -1,0 +1,62 @@
+#!/bin/sh
+
+# This script sets up the PGSSL* environment variables to authorize with a
+# postgres server using mutual certificate authentication.  It can be sourced
+# from a shell or scipt to setup everything needed, other than a hostname.
+
+set -e
+
+fail() {
+  echo "$0: $1" >&2
+  return 1
+}
+
+# postgres has this hand-holding thing where it makes sure the private
+# key is owned by the user and has no group access.  So instead of doing
+# the cool Unix thing, and setting the group of the key to something cool,
+# and managing access by who is in the group, we have to copy the key
+# somewhere else, and make sure it's 0600 to the current user.
+#
+# This will copy the key from /etc/ssl/metermd/($1).keydh to ~/.postgresl/keys
+# if needed, and print the new path.  "if needed" means the user's copy doesn't
+# exist, or they both do, and the global copy differs from the user copy.
+copy_key() {
+  USER_KEY_DIR=~/.postgresql/keys
+  USER_KEY="$USER_KEY_DIR/$(basename "$1")"
+
+
+  if [ ! -f "$USER_KEY" ] || ! diff "$USER_KEY" "$1" > /dev/null ; then
+    if [ ! -d "$USER_KEY_DIR" ]; then
+      mkdir -p "$USER_KEY_DIR"
+      chmod u=rwx,go= "$USER_KEY_DIR"
+    fi
+
+    cp "$1" "$USER_KEY"
+    chown "$USER" "$USER_KEY"
+    chmod u=rw,g=,o= "$USER_KEY"
+  fi
+
+  echo "$USER_KEY"
+}
+
+
+KEYNAME="$1"; [ -z "$KEYNAME" ] && KEYNAME="postgres-client"
+
+PGSSLMODE="verify-ca"
+PGSSLROOTCERT="/etc/ssl/metermd/metermd-ca.crt"
+PGSSLCERT="/etc/ssl/metermd/$KEYNAME.crt"
+PGSSLKEY=$(copy_key /etc/ssl/metermd/"$KEYNAME".key*)
+PGSSLCOMPRESSION=1
+PGUSER="$KEYNAME"
+
+[ -f "$PGSSLCERT" ] || return fail "\$PGSSLCERT isnt a file: $PGSSLCERT"
+[ -f "$PGSSLKEY" ]  || return fail "\$PGSSLKEY isnt a file: $PGSSLKEY"
+
+export PGSSLMODE
+export PGSSLROOTCERT
+export PGSSLCERT
+export PGSSLKEY
+export PGSSLCOMPRESSION
+export PGUSER
+
+return 0

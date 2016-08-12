@@ -3,7 +3,8 @@
 set -e
 shopt -s nullglob
 
-# We never run a postgres DB on a VM disk, only on attached storage.
+# We run postgres on attached storage, not the local disk.
+
 # At this point, we should have /mnt/db([0-9]+) available, and it's
 # either INITIALIZED (has a postgres dir) or not.
 

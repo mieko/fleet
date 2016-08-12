@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -e
+
+ETCPG=/etc/postgresql/9.5/main
+
+# Note: we accept connections from anyone, but in practice:
+# the listen address is just on the smaller "sortranet".
+cat - <<PG_HBA | sudo tee -a $ETCPG/pg_hba.conf > /dev/null
+hostssl   all all  255.255.255.255/0 cert clientcert=1 map=cert
+hostssl   all all  ::1/0             cert clientcert=1 map=cert
+PG_HBA
+
+# Comment out any SSL settings
+sudo sed -i.bak -e 's/^ssl/#ssl/;' $ETCPG/postgresql.conf
+
+<%
+  listen_addresses = %w(ipv4_private ipv6_private).map do |key|
+    node.definition[key]
+  end.compact.join(',')
+%>
+
+cat - <<PG_CONF | sudo tee -a $ETCPG/postgresql.conf > /dev/null
+#-------------------------------------------------------
+# GENERATED IN CULT PROJECT: <%= __FILE__ %>
+#-------------------------------------------------------
+
+ssl = true
+ssl_ciphers = 'EECDH+AESGCM:EDH+AESGCM:AES256+EECDH:AES256+EDH'
+ssl_prefer_server_ciphers = on
+ssl_ecdh_curve = 'prime256v1'
+
+ssl_ca_file   = '/etc/ssl/metermd/metermd-ca.crt'
+ssl_cert_file = '/etc/ssl/metermd/postgres-server.crt'
+ssl_key_file  = '/etc/ssl/metermd/postgres-server.keydh'
+
+listen_addresses = <%= listen_addresses.sq %>
+
+PG_CONF
