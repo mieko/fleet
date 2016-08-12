@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+
+RUNLEVEL=1 sudo -E apt-get -yqq install stunnel4
+
+# We don't want the system-level stunnel service with stunnel.service  It's OK
+# if this fails: It means stunnel is still using init.d scripts. In the future
+# it will be systemd, and we want to disable it then, too.
+
+# Right now, stunnel ships with a file in /etc/defaults with ENABLED=0, we want
+# to keep it this way.
+
+sudo systemctl disable stunnel 2>/dev/null || true
+
+# Installing this service file lets us launch e.g., stunnel@redis.service to use
+# /etc/stunnel/redis.conf
+sudo cp 'files/stunnel@.service' '/etc/systemd/system/'

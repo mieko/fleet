@@ -1,11 +1,11 @@
 [Unit]
-Description=Hitch TLS unwrapping daemon
+Description=Modified Instanced STUNNEL
 After=network.target
-Documentation=https://github.com/varnish/hitch/tree/master/docs man:hitch(8)
 
 [Service]
-ExecStart=/usr/sbin/hitch --user _hitch --group _hitch --config /etc/hitch/%I.conf --quiet
+ExecStart=/usr/bin/stunnel4 /etc/stunnel/%I.conf
 ExecReload=/bin/kill -HUP $MAINPID
+PIDFile=/var/run/stunnel@%I.pid
 Type=simple
 Restart=on-failure
 PrivateDevices=true

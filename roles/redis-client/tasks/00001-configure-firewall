@@ -1,8 +1,8 @@
-#!/usr/bin/env sh
-set -e
+#!/usr/bin/env bash
+set -i
 
 <% %w(ipv4_private ipv6_private).each do |key| %>
   <% if (addr = node.definition[key]) %>
-    sudo ufw allow in to <%= addr.q %> from any port 6379
+    sudo ufw allow out from <%= addr.q %> to any port 6379
   <% end %>
 <% end %>

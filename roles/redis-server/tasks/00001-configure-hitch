@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-set -e
-
-sudo cp files/hitch-redis.conf /etc/hitch/redis.conf
-sudo systemctl enable hitch@redis
-sudo systemctl start hitch@redis

@@ -1,2 +1,0 @@
-<%= File.read('files/redis-client.key') %>
-<%= File.read('files/redis-client.dhparam') %>

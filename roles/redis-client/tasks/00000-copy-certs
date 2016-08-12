@@ -5,15 +5,9 @@
 #   url: 'rediss://somehost/',
 #   ssl_params: {
 #     ca_file: '/etc/ssl/metermd/metermd-ca.crt',
-#     cert: OpenSSL::X509::Certificate.new(File.read('/etc/ssl/metermd/redis-client.crt')),
-#     key: OpenSSL::PKey::RSA.new(File.read('/etc/ssl/metermd/redis-client.keydh')),
+#     cert: OpenSSL::X509::Certificate.new(File.read('/etc/ssl/metermd/redis-client.pem')),
 #   }
 # )
 
 set -e
-
-# FIXME: redis-client group
-sudo cp files/redis-client.crt /etc/ssl/metermd
-sudo cp files/redis-client.dhparam /etc/ssl/metermd
-sudo cp files/redis-client.key /etc/ssl/metermd
-sudo cp files/redis-client.keydh /etc/ssl/metermd
+sudo cp files/redis-client.pem /etc/ssl/metermd

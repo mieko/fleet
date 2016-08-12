@@ -2,4 +2,5 @@
 set -e
 
 sudo cp files/redis-server.pem /etc/ssl/metermd/
-sudo chown _hitch:_hitch /etc/ssl/metermd/redis-server.pem
+sudo chown stunnel4:stunnel4 /etc/ssl/metermd/redis-server.pem
+sudo chmod u=r,go= /etc/ssl/metermd/redis-server.pem
