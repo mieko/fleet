@@ -1,4 +1,0 @@
-{
-  "roles": [ "redis-server" ],
-  "host": "192.34.62.43"
-}
