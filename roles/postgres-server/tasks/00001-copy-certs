@@ -2,8 +2,8 @@
 set -e
 
 sudo cp files/postgres-server.crt /etc/ssl/metermd/
-sudo cp files/postgres-server.keydh /etc/ssl/metermd/
+sudo cp files/postgres-server.key /etc/ssl/metermd/
 
-sudo chown postgres:postgres /etc/ssl/metermd/postgres-server.{crt,keydh}
+sudo chown postgres:postgres /etc/ssl/metermd/postgres-server.{crt,key}
 
-sudo chmod u=r,go= /etc/ssl/metermd/postgres-server.keydh
+sudo chmod u=r,go= /etc/ssl/metermd/postgres-server.key

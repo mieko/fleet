@@ -4,7 +4,7 @@
 We run stunnel as an instance-per-service, instead of a forking daemon.  So
 the config file has to be self-contained.
 
-For a proper configuration, check out redis-server.
+For an example of a proper configuration, check out redis-server.
 
 In the end you'll want a file in /etc/stunnel/your-service.conf, and to enable
 it with:

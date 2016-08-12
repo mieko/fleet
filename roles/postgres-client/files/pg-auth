@@ -17,7 +17,7 @@ fail() {
 # and managing access by who is in the group, we have to copy the key
 # somewhere else, and make sure it's 0600 to the current user.
 #
-# This will copy the key from /etc/ssl/metermd/($1).keydh to ~/.postgresl/keys
+# This will copy the key from /etc/ssl/metermd/($1).key to ~/.postgresl/keys
 # if needed, and print the new path.  "if needed" means the user's copy doesn't
 # exist, or they both do, and the global copy differs from the user copy.
 copy_key() {

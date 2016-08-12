@@ -1,2 +1,0 @@
-<%= File.read('files/postgres-client.key') %>
-<%= File.read('files/postgres-client.dhparam') %>

@@ -7,3 +7,5 @@ sudo cp files/metermd-ca.crt /etc/ssl/metermd
 sudo ln -s /etc/ssl/metermd/metermd-ca.crt /usr/local/share/ca-certificates/
 
 sudo update-ca-certificates
+
+sudo cp files/dhparam /etc/ssl/metermd/dhparam

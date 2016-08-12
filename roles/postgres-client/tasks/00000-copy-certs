@@ -3,4 +3,4 @@
 set -e
 
 sudo cp files/postgres-client.crt /etc/ssl/metermd/
-sudo cp files/postgres-client.keydh /etc/ssl/metermd/
+sudo cp files/postgres-client.key /etc/ssl/metermd/
