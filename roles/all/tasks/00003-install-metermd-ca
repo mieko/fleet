@@ -15,4 +15,7 @@ sudo ln -s /etc/ssl/metermd/meter.md_Certificate_Authority.crt \
      /usr/local/share/ca-certificates/
 sudo update-ca-certificates
 
+# dhparams do not have to be secret nor per-use.  We just need to know that the
+# NSA hasn't been cranking on ours for years, which would be the case with
+# anything that ships by default with anyting.
 sudo cp files/dhparam /etc/ssl/metermd/dhparam
