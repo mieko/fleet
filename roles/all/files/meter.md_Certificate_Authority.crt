@@ -1,93 +1,34 @@
-Certificate:
-    Data:
-        Version: 3 (0x2)
-        Serial Number:
-            ea:c5:c6:d6:4c:39:ca:3e
-        Signature Algorithm: sha256WithRSAEncryption
-        Issuer: C=US, ST=North Carolina, O=meter.md llc, OU=meter.md llc Security, CN=meter.md Certificate Authority
-        Validity
-            Not Before: Jul 24 19:22:12 2016 GMT
-            Not After : Jul 22 19:22:12 2026 GMT
-        Subject: C=US, ST=North Carolina, O=meter.md llc, OU=meter.md llc Security, CN=meter.md Certificate Authority
-        Subject Public Key Info:
-            Public Key Algorithm: rsaEncryption
-            RSA Public Key: (2048 bit)
-                Modulus (2048 bit):
-                    00:e6:d4:f8:7d:d4:b6:c1:a4:c6:50:c3:93:55:1b:
-                    ab:79:de:05:1b:21:da:75:d7:b2:bf:53:34:ca:1a:
-                    d7:84:9d:e1:c7:14:43:d4:a2:e3:ee:4b:2e:a4:ff:
-                    ed:6b:f4:84:5c:ce:f2:33:e6:3d:18:a8:75:c0:c5:
-                    28:21:a7:61:ff:b3:f9:4a:fe:13:a6:b7:62:ad:85:
-                    aa:e4:3e:61:17:78:28:dd:51:5c:c1:15:4c:c8:be:
-                    d9:05:42:25:c2:63:29:7f:ce:2c:8a:44:6c:7a:45:
-                    29:f5:f8:0b:8c:00:30:48:b1:73:03:0a:4e:bd:43:
-                    3c:8e:a1:b1:47:fb:83:ae:18:1c:28:34:22:b9:c4:
-                    67:6d:45:4a:62:80:d6:da:1a:a8:e4:11:17:a3:2c:
-                    a5:54:ca:48:d5:f3:70:52:21:4b:09:bf:ce:b6:3c:
-                    14:6b:25:08:d2:6f:37:05:cc:fc:95:5d:55:20:b4:
-                    08:a6:88:08:cb:14:83:9e:96:57:af:9a:20:60:c5:
-                    05:a0:bc:b2:b6:27:d3:e9:78:98:cf:cd:29:cb:c0:
-                    62:f3:14:e7:f2:6b:82:66:04:57:1d:2b:7c:82:fa:
-                    7a:20:3b:b8:b6:10:85:34:d8:8a:98:b8:58:5b:ef:
-                    35:ba:38:a9:87:87:07:3e:37:82:4b:92:b2:a4:db:
-                    13:79
-                Exponent: 65537 (0x10001)
-        X509v3 extensions:
-            X509v3 Subject Key Identifier:
-                45:65:90:08:50:69:15:ED:2B:60:9E:76:51:86:51:AC:1E:7D:0C:FB
-            X509v3 Authority Key Identifier:
-                keyid:45:65:90:08:50:69:15:ED:2B:60:9E:76:51:86:51:AC:1E:7D:0C:FB
-                DirName:/C=US/ST=North Carolina/O=meter.md llc/OU=meter.md llc Security/CN=meter.md Certificate Authority
-                serial:EA:C5:C6:D6:4C:39:CA:3E
-
-            X509v3 Basic Constraints:
-                CA:TRUE
-            X509v3 CRL Distribution Points:
-                URI:https://security.meter.md/ca.crl
-
-            X509v3 Subject Alternative Name:
-                email:security@meter.md
-    Signature Algorithm: sha256WithRSAEncryption
-        e2:cf:7a:49:d3:01:d2:30:c9:b6:e3:67:ee:cf:70:3f:dc:fc:
-        8e:14:d4:3d:47:5f:e1:59:f5:a2:ea:f4:c4:2f:5c:d5:de:7e:
-        c1:11:3e:f1:92:cd:5b:6a:14:71:ba:ac:27:4c:53:b6:f8:04:
-        7b:99:2e:fe:37:17:f8:b9:12:18:ff:d0:e8:12:9d:5c:2a:47:
-        c2:db:46:ca:8e:20:08:82:d2:a0:77:12:1d:20:78:40:a2:cb:
-        c3:aa:f8:bf:34:6a:80:d2:1f:a9:a5:e9:2a:9e:13:f1:58:14:
-        1f:ab:cf:99:f4:c7:32:e4:ed:a0:b1:1b:c2:c8:e1:52:27:53:
-        08:70:a5:de:29:30:72:c3:47:c3:92:8f:e2:24:bf:c6:98:8a:
-        c9:ef:c9:e0:ac:86:5f:da:f1:7e:df:38:38:f5:00:c3:f9:c2:
-        c0:8d:4c:88:45:d4:b7:7c:cf:ce:4b:2c:90:a4:a4:16:0c:b0:
-        1a:15:bf:a6:12:1e:1a:af:a5:b7:a3:73:d7:f9:e6:42:e9:e5:
-        07:54:ac:a6:b4:6f:a6:ef:96:24:1f:d9:1b:23:f4:7d:01:64:
-        50:1f:8a:76:30:25:97:5b:65:64:0e:81:09:83:62:06:ce:ee:
-        46:45:18:32:b5:03:a3:c3:33:37:ce:7b:8c:b5:ee:db:5e:f8:
-        f2:4d:7a:a9
 -----BEGIN CERTIFICATE-----
-MIIE0zCCA7ugAwIBAgIJAOrFxtZMOco+MA0GCSqGSIb3DQEBCwUAMIGGMQswCQYD
-VQQGEwJVUzEXMBUGA1UECBMOTm9ydGggQ2Fyb2xpbmExFTATBgNVBAoTDG1ldGVy
-Lm1kIGxsYzEeMBwGA1UECxMVbWV0ZXIubWQgbGxjIFNlY3VyaXR5MScwJQYDVQQD
-Ex5tZXRlci5tZCBDZXJ0aWZpY2F0ZSBBdXRob3JpdHkwHhcNMTYwNzI0MTkyMjEy
-WhcNMjYwNzIyMTkyMjEyWjCBhjELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRo
-IENhcm9saW5hMRUwEwYDVQQKEwxtZXRlci5tZCBsbGMxHjAcBgNVBAsTFW1ldGVy
-Lm1kIGxsYyBTZWN1cml0eTEnMCUGA1UEAxMebWV0ZXIubWQgQ2VydGlmaWNhdGUg
-QXV0aG9yaXR5MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5tT4fdS2
-waTGUMOTVRured4FGyHaddeyv1M0yhrXhJ3hxxRD1KLj7ksupP/ta/SEXM7yM+Y9
-GKh1wMUoIadh/7P5Sv4TprdirYWq5D5hF3go3VFcwRVMyL7ZBUIlwmMpf84sikRs
-ekUp9fgLjAAwSLFzAwpOvUM8jqGxR/uDrhgcKDQiucRnbUVKYoDW2hqo5BEXoyyl
-VMpI1fNwUiFLCb/OtjwUayUI0m83Bcz8lV1VILQIpogIyxSDnpZXr5ogYMUFoLyy
-tifT6XiYz80py8Bi8xTn8muCZgRXHSt8gvp6IDu4thCFNNiKmLhYW+81ujiph4cH
-PjeCS5KypNsTeQIDAQABo4IBQDCCATwwHQYDVR0OBBYEFEVlkAhQaRXtK2CedlGG
-UawefQz7MIG7BgNVHSMEgbMwgbCAFEVlkAhQaRXtK2CedlGGUawefQz7oYGMpIGJ
-MIGGMQswCQYDVQQGEwJVUzEXMBUGA1UECBMOTm9ydGggQ2Fyb2xpbmExFTATBgNV
-BAoTDG1ldGVyLm1kIGxsYzEeMBwGA1UECxMVbWV0ZXIubWQgbGxjIFNlY3VyaXR5
-MScwJQYDVQQDEx5tZXRlci5tZCBDZXJ0aWZpY2F0ZSBBdXRob3JpdHmCCQDqxcbW
-TDnKPjAMBgNVHRMEBTADAQH/MDEGA1UdHwQqMCgwJqAkoCKGIGh0dHBzOi8vc2Vj
-dXJpdHkubWV0ZXIubWQvY2EuY3JsMBwGA1UdEQQVMBOBEXNlY3VyaXR5QG1ldGVy
-Lm1kMA0GCSqGSIb3DQEBCwUAA4IBAQDiz3pJ0wHSMMm242fuz3A/3PyOFNQ9R1/h
-WfWi6vTEL1zV3n7BET7xks1bahRxuqwnTFO2+AR7mS7+Nxf4uRIY/9DoEp1cKkfC
-20bKjiAIgtKgdxIdIHhAosvDqvi/NGqA0h+ppekqnhPxWBQfq8+Z9Mcy5O2gsRvC
-yOFSJ1MIcKXeKTByw0fDko/iJL/GmIrJ78ngrIZf2vF+3zg49QDD+cLAjUyIRdS3
-fM/OSyyQpKQWDLAaFb+mEh4ar6W3o3PX+eZC6eUHVKymtG+m75YkH9kbI/R9AWRQ
-H4p2MCWXW2VkDoEJg2IGzu5GRRgytQOjwzM3znuMte7bXvjyTXqp
+MIIF5jCCA86gAwIBAgIBATANBgkqhkiG9w0BAQsFADCBkjELMAkGA1UEBhMCVVMx
+FzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMREwDwYDVQQHEwhTYXBwaGlyZTEVMBMG
+A1UEChMMbWV0ZXIubWQgbGxjMRcwFQYDVQQLDA5TZWN1cml0eSAmIFBLSTEnMCUG
+A1UEAxMebWV0ZXIubWQgQ2VydGlmaWNhdGUgQXV0aG9yaXR5MB4XDTE2MDgxNDA1
+NTU1NloXDTI2MDgxNDA1NTU1OFowgZIxCzAJBgNVBAYTAlVTMRcwFQYDVQQIEw5O
+b3J0aCBDYXJvbGluYTERMA8GA1UEBxMIU2FwcGhpcmUxFTATBgNVBAoTDG1ldGVy
+Lm1kIGxsYzEXMBUGA1UECwwOU2VjdXJpdHkgJiBQS0kxJzAlBgNVBAMTHm1ldGVy
+Lm1kIENlcnRpZmljYXRlIEF1dGhvcml0eTCCAiIwDQYJKoZIhvcNAQEBBQADggIP
+ADCCAgoCggIBALyY28uf4DGzrunsGI38Cp4yhwzS0JURghzJ0tgx8Is6801hVZDC
+8rz5u9YY+kH0fEAIemrHZ8DnhYDPfyDbMJ2Dwec2seSrB80tgYVy5ERfxV2FmI3q
+XQtqY8ZdNYO1oX70BEl7EbSrRJ5v26ttVXsLRo1HBcQ9ez6NYKl5ineXbuTcZk8s
+K4SeXG1qlbBn4WA6OmfeVsYhMOJfPVMBjk5kRuGDoNXILSss/+n+Dg/zdRj7wSxS
+ImSuS9N+LcTK79G1zI3TO23saKvvo5DekEJ/ktuA3b/blilqAuV2wWET+AuocOXd
+Eo1VMopS6EdZPWOJNRQDTBFEDDZFZv4NbfoQlxwnOHwOX7j7mhzOKFepPGmiJapu
+3orzSl2E7+wruClKHS6S2fnSCBfDW3VoZhGyTmMw0JnB/oOvHsTNgOQHCR7pXaul
+na+Jd+Q6inhUPxJCZiKM4EWkSwCLV2NtkBBL8mcNKKADyt8Oo9aj/G6el5Z6CovJ
+Yul4csdouFB8HPgTfPkqtdx3ooPNRPQ6OJnn+u2k3uFzcBsSbH6fGXv53pGCY3Jk
+7Lg+GnpBW8WkK4EOthNGy91WaOXHw1nBUN2L7lM1PR0s7JAslDGnsyDz23A8HnWf
+VADPNwopYYgm+6CtWHcZMZ+NZ2Q1uB4bo5kcNrMuDZTKQ7ARJhPS08TRAgMBAAGj
+RTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdDgQW
+BBRFLy/4GQQ3mF063IWhw/Zoorm6VjANBgkqhkiG9w0BAQsFAAOCAgEAudoKMeug
+UjLQN3gpj+ct3usFfe5cfdVNTzI3rYbino1QvovppDUyxKay7qIdkbsh9BJTuwPJ
+XDfhx+jCYmhO469fhYn5GDUHLRxhsXsnqWKU9LqNbYlcZYxZZkKzo/RJ7Nd3GqJu
+RsJTqpV8sjea0gNxdE/YbkOpPduGjm5a4Eqv4zxvq7ZlptlLTcBg3YeWpCJUnXMi
+gDEGlKeFOQhy1XHO7Fg0fiwxinC9ReW83YN9KSzV1gqL5LTQPJ4nJr3uZxcm1yYt
+oa4UHTj69Qnd767OkYmBojUbjB5u8fcOu20Jc5+SoojAw6dPF72J09Qbw99jo3lo
+GTqWIDj6jmGM8rNNtrsYLmqFCNEueYDt50DPacsADK7PxYvB9Nf3dwnWaIuB7fyJ
+N14PJ0w0TWIwVt664pU3R8hhQoMo/Q/+ol+EH927lc23oDcjOxwCPPmwnxb+nozB
+EQc+2+Q/9YKSA493UDakectxyIb9J1Dgcr73sFUJiVwGr6+D19WEqaZdWNsEBagb
+OZqEgd4KDPFx7Tu5VdPUvoxexegvxJ2+c3LI2Zeh50DfITuKoM+GR5wIl/3uZyEH
+D0rkLve043Pf9JyI5G09FxWslxoEd49y5hZR1ktLyx+Wdu00YYvH9UGe/oTZYWi+
+vQUU7iVe/6UOmoJxRNTDlG4TX/m3cjsBGDA=
 -----END CERTIFICATE-----
