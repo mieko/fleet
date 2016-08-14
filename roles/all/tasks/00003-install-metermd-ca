@@ -2,10 +2,17 @@
 set -e
 
 sudo mkdir -p /etc/ssl/metermd
-sudo cp files/metermd-ca.crt /etc/ssl/metermd
 
-sudo ln -s /etc/ssl/metermd/metermd-ca.crt /usr/local/share/ca-certificates/
+# Install it in our custom store.
+sudo cp files/meter.md_Certificate_Authority.crt /etc/ssl/metermd
 
+# Give us a friendly name.
+sudo ln -s /etc/ssl/metermd/meter.md_Certificate_Authority.crt \
+           /etc/ssl/metermd/metermd-ca.crt
+
+# Add it to the system trust store
+sudo ln -s /etc/ssl/metermd/meter.md_Certificate_Authority.crt \
+     /usr/local/share/ca-certificates/
 sudo update-ca-certificates
 
 sudo cp files/dhparam /etc/ssl/metermd/dhparam
