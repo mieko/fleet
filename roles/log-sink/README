@@ -1,0 +1,7 @@
+log-sink
+========
+
+The Graylog deb in the files/ directory is a meta-deb, only 2KB.  When
+installed, it inserts an entry into sources.list, etc.  Because of its small
+size, and it is the official way of installing Graylog, we'll leave it checked
+into the fleet tree.  If it's deleted, the node will attempt to download it.

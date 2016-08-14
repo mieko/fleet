@@ -1,6 +1,6 @@
 includes:
   - metermd-app
   - httpd
-  - postgres-server-master
+  - postgres-server
   - redis-server
 user: cult
