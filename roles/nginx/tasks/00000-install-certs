@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+sudo cp files/applink-client.{key,crt} /etc/ssl/metermd

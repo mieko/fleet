@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+RUNLEVEL=1 sudo -E apt-get install -yqq nginx
+
+sudo mkdir -p /etc/nginx/metermd
+sudo cp files/metermd.conf /etc/nginx/metermd/
+sudo cp files/backends.conf /etc/nginx/metermd/
+
+echo 'include /etc/nginx/metermd/metermd.conf;' | \
+  sudo tee -a /etc/nginx/nginx.conf > /dev/null
