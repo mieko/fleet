@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+# The default archives.ubuntu.org mirrors can sometimes have problems with
+# IPv6, e.g., just hanging.  We need to reconsider this occassionally and see
+# if either: a) All providers we use install their mirrors into apt sources, and
+#               work with ipv6, or
+#            b) archive.ubuntu.org never has this problem
+
+echo 'Acquire::ForceIPv4 "true";' | \
+  sudo tee -a /etc/apt/apt.conf.d/99force-ipv4 > /dev/null
+
+sudo apt-get -yqq install apt-transport-https
+sudo apt-get -yqq update
+sudo apt-get -yqq dist-upgrade

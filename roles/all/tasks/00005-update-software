@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-sudo apt-get -yqq install apt-transport-https
-sudo apt-get -yqq update
-sudo apt-get -yqq dist-upgrade
