@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 # We don't want postgres to start when it is installed, because we have a
 # configuration for it.  RUNLEVEL=1 accomplishes this.

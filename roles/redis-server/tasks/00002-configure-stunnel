@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 set -e
 
 sudo cp files/etc-stunnel-redis.conf /etc/stunnel/redis.conf

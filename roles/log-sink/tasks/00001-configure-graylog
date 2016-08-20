@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -e
+
 cat <<EOD | sudo tee -a /etc/default/graylog-server > /dev/null
 GRAYLOG_SERVER_JAVA_OPTS="-Xms400m -Xmx500m -XX:NewRatio=1 -server \
                           -XX:+ResizeTLAB -XX:+UseConcMarkSweepGC \
