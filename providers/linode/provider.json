@@ -1,0 +1,48 @@
+{
+  "api_key": "9OjFg1LVT9q13WVy60CYTz3ig5LS4VRo2trhDELs0RRd5ix5JMkNEi2U6T8Cd1g2",
+  "driver": "linode",
+  "configurations": {
+    "sizes": [
+      "2gb",
+      "4gb",
+      "8gb",
+      "12gb",
+      "24gb",
+      "48gb",
+      "64gb",
+      "80gb",
+      "120gb"
+    ],
+    "zones": [
+      "dallas",
+      "fremont",
+      "atlanta",
+      "newark",
+      "london",
+      "tokyo",
+      "singapore",
+      "frankfurt"
+    ],
+    "images": [
+      "arch-2016-06-01",
+      "centos-7",
+      "debian-7",
+      "debian-8",
+      "fedora-24",
+      "gentoo-2014-12",
+      "opensuse-leap-42-1",
+      "slackware-14-1",
+      "ubuntu-14-04",
+      "ubuntu-16-04",
+      "centos-5-6",
+      "centos-6-5",
+      "fedora-23",
+      "gentoo-2013-11-26",
+      "opensuse-13-1",
+      "opensuse-13-2",
+      "slackware-13-37",
+      "ubuntu-12-04",
+      "slackware-13-37-32bit"
+    ]
+  }
+}

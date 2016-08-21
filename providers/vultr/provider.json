@@ -1,0 +1,44 @@
+{
+  "api_key": "YFE75ULEIXJAXCN6LTRCUKOEZVKRKP4MZEVA",
+  "driver": "vultr",
+  "configurations": {
+    "sizes": [
+      "768mb",
+      "1gb",
+      "2gb",
+      "4gb",
+      "8gb",
+      "16gb",
+      "32gb",
+      "64gb"
+    ],
+    "zones": [
+      "atl",
+      "ord",
+      "dfw",
+      "lax",
+      "mia",
+      "ewr",
+      "sea",
+      "sjc",
+      "ams",
+      "nrt",
+      "lhr",
+      "cdg",
+      "fra",
+      "syd"
+    ],
+    "images": [
+      "centos-6",
+      "centos-5",
+      "centos-7",
+      "ubuntu-12-04",
+      "ubuntu-14-04",
+      "ubuntu-16-04",
+      "debian-7",
+      "debian-8",
+      "freebsd-10",
+      "coreos-stable"
+    ]
+  }
+}

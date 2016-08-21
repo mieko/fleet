@@ -1,0 +1,48 @@
+{
+  "api_key": "3c6f6943f2f77b09cb8a8943a56e187c54fda4c1c547cd1a2ad32318f05ffb9a",
+  "driver": "digital-ocean",
+  "configurations": {
+    "sizes": [
+      "512mb",
+      "1gb",
+      "2gb",
+      "4gb",
+      "8gb",
+      "16gb",
+      "32gb",
+      "48gb",
+      "64gb"
+    ],
+    "zones": [
+      "nyc1",
+      "sfo1",
+      "nyc2",
+      "ams2",
+      "sgp1",
+      "lon1",
+      "nyc3",
+      "ams3",
+      "fra1",
+      "tor1",
+      "sfo2",
+      "blr1"
+    ],
+    "images": [
+      "freebsd-10-1",
+      "fedora-23",
+      "centos-6-5",
+      "debian-7",
+      "fedora-24",
+      "centos-5",
+      "centos-6",
+      "centos-7-0",
+      "freebsd-10-2",
+      "debian-8",
+      "centos-7",
+      "freebsd-10-3",
+      "ubuntu-16-04",
+      "ubuntu-12-04",
+      "ubuntu-14-04"
+    ]
+  }
+}
