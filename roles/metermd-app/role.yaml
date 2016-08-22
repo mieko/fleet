@@ -1,2 +1,3 @@
 includes:
   - redis-client
+  - postgres-client

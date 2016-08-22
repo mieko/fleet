@@ -1,6 +1,5 @@
 includes:
   - metermd-app
-  - httpd
+  - nginx
   - postgres-server
   - redis-server
-user: cult
