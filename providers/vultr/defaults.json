@@ -1,0 +1,5 @@
+{
+  "default_size": "768mb",
+  "default_zone": "ewr",
+  "default_image": "ubuntu-16-04"
+}
