@@ -1,3 +1,3 @@
 {
-  "include": ["keyslime-common"]
+  "includes": ["keyslime-common"]
 }
