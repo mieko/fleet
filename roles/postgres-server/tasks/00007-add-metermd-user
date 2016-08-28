@@ -9,10 +9,7 @@ fi
 ETCPG=/etc/postgresql/9.5/main
 
 cat - <<PG_IDENT | tee -a "$ETCPG/pg_ident.conf" > /dev/null
-#-------------------------------------------------------
 # GENERATED IN CULT PROJECT: <%= __FILE__ %>
-#-------------------------------------------------------
-
 cert             postgres-client    metermd
 PG_IDENT
 
