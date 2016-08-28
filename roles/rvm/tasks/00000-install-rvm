@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -e
+
+# This is a meta-role.  A role depending on 'rvm' gets the installer installed.
+# Additionally, a role can symlink this file into their task directory to
+# actually have it installed with parameters they can set on their role.
+
+<% if role.name == 'rvm' %>
+  sudo mkdir -p /usr/local/share/rvm-installer
+  sudo cp files/rvm.{sh,asc} /usr/local/share/rvm-installer/
+  sudo chmod +x /usr/local/share/rvm-installer/rvm.sh
+<% else %>
+  <% if (rvm_user = node.definition['rvm_user']) %>
+
+    if [[ "$USER" != <%= rvm_user.q %> ]] ; then
+      # By default tasks only have +x for "cult".  We give +x for world
+      chmod ugo+x "$0"
+      exec sudo -H -u <%= rvm_user.q %> -- "$0" "$@"
+    fi
+  <% end %>
+
+  gpg --import /usr/local/share/rvm-installer/rvm.asc
+  bash /usr/local/share/rvm-installer/rvm.sh
+
+  <% if (rvm_use = node.definition['rvm_ruby']) %>
+    hash -r
+    source "$HOME/.rvm/scripts/rvm"
+    rvm install <%= rvm_use.to_s.q %> --default
+    rvm use <%= rvm_use.to_s.q %> --default
+  <% end %>
+<% end %>

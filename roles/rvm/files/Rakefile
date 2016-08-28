@@ -1,0 +1,20 @@
+KEYID='409B6B1796C275462A1703113804BB82D39DC0E3'
+
+file "rvm.asc" do |t|
+  sh "gpg --keyserver hkp://keys.gnupg.net " +
+     "--recv-keys #{KEYID}"
+  sh "gpg --armour --export #{KEYID} > #{t.name}"
+end
+task :default => 'rvm.asc'
+
+file "rvm.sh" do |t|
+  sh "curl -sSL https://get.rvm.io > #{t.name}"
+end
+task :default => 'rvm.sh'
+
+task :clean do
+  rm_f %w(rvm.sh rvm.asc)
+end
+
+desc "Update RVM GPG key and install script"
+task :update => [:clean, :default]
