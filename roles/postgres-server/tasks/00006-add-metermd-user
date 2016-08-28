@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -e
+
+if [[ "$USER" != "postgres" ]]; then
+  chmod ugo+x "$0"
+  exec sudo -H -u postgres -- "$0" "$@"
+fi
+
+ETCPG=/etc/postgresql/9.5/main
+
+cat - <<PG_IDENT | tee -a "$ETCPG/pg_ident.conf" > /dev/null
+#-------------------------------------------------------
+# GENERATED IN CULT PROJECT: <%= __FILE__ %>
+#-------------------------------------------------------
+
+cert             postgres-client    metermd
+PG_IDENT
+
+cat - <<SQL | psql
+  CREATE USER metermd WITH SUPERUSER;
+SQL

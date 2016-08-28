@@ -10,11 +10,11 @@ if [ ! -d "$DB_VOLUME" ]; then
 fi
 
 # move the normal install aside, and link to the external disk.
-sudo mv '/var/lib/postgresql' '/var/lib/postgresql-debian'
+sudo mv '/var/lib/postgresql' '/var/lib/ORIGINAL-postgresql'
 sudo ln -s "$DB_VOLUME/postgresql" '/var/lib'
 
-sudo mv '/etc/postgresql' '/etc/postgresql-debian'
+sudo mv '/etc/postgresql' '/etc/ORIGINAL-postgresql'
 sudo ln -s "$DB_VOLUME/postgresql/etc" "/etc/postgresql"
 
-sudo mv '/etc/postgresql-common' '/etc/postgresql-common-debian'
+sudo mv '/etc/postgresql-common' '/etc/ORIGINAL-postgresql-common'
 sudo ln -s "$DB_VOLUME/postgresql/etc-common" "/etc/postgresql-common"

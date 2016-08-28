@@ -4,7 +4,6 @@
 # postgres server using mutual certificate authentication.  It can be sourced
 # from a shell or scipt to setup everything needed, other than a hostname.
 
-set -e
 
 fail() {
   echo "$0: $1" >&2
@@ -40,13 +39,13 @@ copy_key() {
 }
 
 
-KEYNAME="$1"; [ -z "$KEYNAME" ] && KEYNAME="postgres-client"
+KEYNAME="$1"
+[ -z "$KEYNAME" ] && KEYNAME="postgres-client"
 
 PGSSLMODE="verify-ca"
 PGSSLROOTCERT="/etc/ssl/metermd/metermd-ca.crt"
 PGSSLCERT="/etc/ssl/metermd/$KEYNAME.crt"
 PGSSLKEY=$(copy_key /etc/ssl/metermd/"$KEYNAME".key*)
-PGSSLCOMPRESSION=1
 PGUSER="$KEYNAME"
 
 [ -f "$PGSSLCERT" ] || return fail "\$PGSSLCERT isnt a file: $PGSSLCERT"
