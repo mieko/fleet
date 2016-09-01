@@ -7,6 +7,7 @@
 # Note: This file MUST exist, even if you're not doing anything with it.  It's
 # how the Cult tool decides whether a directory is a project or not.
 
+Cult.singletons = true
 
 Cult.project.instance_eval do
   # In this this scope, you're in a context very similar to the console, where
