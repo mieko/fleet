@@ -2,5 +2,6 @@ includes:
   - redis-client
   - postgres-client
   - rvm
+  - gluster-client
 rvm_user: metermd
 rvm_ruby: 2.3

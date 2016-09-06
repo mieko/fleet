@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -e
+
+RUNLEVEL=0 sudo -E apt-get install -yqq glusterfs-client

@@ -3,3 +3,4 @@ includes:
   - nginx
   - postgres-server
   - redis-server
+  - gluster-server
