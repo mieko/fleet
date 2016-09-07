@@ -26,5 +26,5 @@ Cult.project.instance_eval do
   # If you don't set this, the project's default_provider will be nil until one
   # is created, and otherwise, the first one.  This really only comes into play
   # when you're using multiple providers.
-  # self.default_provider = providers[/my-vps/]
+  self.default_provider = providers['digital-ocean']
 end

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Waiting for dpkg lock"
+while [[ -f /var/lib/dpkg/lock && $(sudo cat /var/lib/dpkg/lock) != '' ]] ; do
+  sleep 1
+done

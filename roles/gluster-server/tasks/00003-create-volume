@@ -24,5 +24,5 @@ sudo gluster volume create pool \
 
 sudo gluster volume set pool client.ssl on
 sudo gluster volume set pool server.ssl on
-sudo gluster volume set pool ssl-auth.allow gluster-client,gluster-server
+sudo gluster volume set pool ssl-auth.allow 'gluster-client,gluster-server'
 sudo gluster volume set pool ssl.cipher-list 'EECDH+AESGCM:AES256+EECDH'
