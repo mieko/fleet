@@ -1,6 +1,0 @@
-includes:
-  - metermd-app
-  - nginx
-  - postgres-server
-  - redis-server
-  - gluster-server
