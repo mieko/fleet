@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -e
+
+NETMAP=/etc/cult-hosts
+
+sudo rm -f "$NETMAP"
+
+<% nodes.each do |n| %>
+<% roles = n.build_order.map(&:name).join " " %>
+echo "<%= n.ipv4_private %> <%= n.name %> # <%= roles %>" | sudo tee -a "$NETMAP"
+<% end %>
