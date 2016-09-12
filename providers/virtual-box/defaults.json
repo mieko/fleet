@@ -1,0 +1,5 @@
+{
+  "default_size": "1gb",
+  "default_zone": "local",
+  "default_image": "ubuntu-16-04"
+}

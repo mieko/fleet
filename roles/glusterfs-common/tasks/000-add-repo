@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
+                 --recv-keys 0xf7c73fcc930ac9f83b387a5613e01b7b3fe869a9
+
 cat <<APT | sudo tee /etc/apt/sources.list.d/glusterfs-ppa.list > /dev/null
 deb http://ppa.launchpad.net/gluster/glusterfs-3.8/ubuntu $(lsb_release -sc) main
 APT
