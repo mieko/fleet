@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-( echo 'PasswordAuthentication no' ;
-  echo 'ChallengeResponseAuthentication no' ) \
-    | sudo tee -a /etc/ssh/sshd_config > /dev/null
+cat <<SSHD_CONFIG | sudo tee -a /etc/ssh/sshd_config
+PasswordAuthentication no
+ChallengeResponseAuthentication no
+SSHD_CONFIG
+
+sudo systemctl reload sshd

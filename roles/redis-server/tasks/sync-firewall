@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+
+sudo ufw-delete-by-comment 'redis-server:'
+
+# We allow other redis clients AND servers
+<% node.zone_peers.with(role: /^redis\-/).each do |other| %>
+  sudo ufw allow in to <%= node.addr_from(other).q %> \
+                    port 6379 \
+                    from <%= other.addr_from(node).q %> \
+                    comment 'redis-server: servicing <%= other.name.q %>'
+<% end %>

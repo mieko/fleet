@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+# Start from a clean slate
+sudo ufw-delete-by-comment 'glusterfs-server:'
+
+<% node.zone_peers.with(role: /^glusterfs/).each do |other| %>
+  sudo ufw allow in to <%= node.addr_from(other).q %> \
+                    proto tcp \
+                    port 111,24007,24008,49152,49153 \
+                    from <%= other.addr_from(node).q %> \
+                    comment 'glusterfs-server: allowing <%= other.name.dq %>'
+<% end %>

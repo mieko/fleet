@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -e
+
+# What you're looking for is in postgresql-common, as both clients and servers
+# need a client firewall configuration due to replication.

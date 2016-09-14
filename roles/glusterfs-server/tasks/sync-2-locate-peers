@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+<% node.zone_peers.with(role: 'clusterfs-server').each do |other| %>
+  sudo gluster peer probe <%= other.addr_from(node).q %>
+<% end %>

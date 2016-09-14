@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+# This script deletes all UFW rules with a comment matching the first argument.
+# Note that it does a prefix match, so you can use the rest of the comment for
+# real purposes.
+
+fail() {
+  echo "$0: $1" >&2
+  exit 1
+}
+
+if [ -z "$1" ]; then
+  fail "usage: $0 COMMENT"
+fi
+
+while :; do
+  FIRST_MATCH=$(ufw status numbered | grep -F "# $1" | head -n 1)
+  if [ -z "$FIRST_MATCH" ]; then
+    # No more rules matching
+    break
+  fi
+
+  RULE_NUMBER=$(echo "$FIRST_MATCH" | cut -d']' -f1 | tr -d '[] ')
+  yes | ufw delete "$RULE_NUMBER" > /dev/null
+done

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -e
+
+sudo ufw-delete-by-comment 'nginx:'
+
+sudo ufw allow in http comment 'nginx: servicing public'
+sudo ufw allow in https comment 'nginx: servicing public'
+
+
+<% node.zone_peers.with(role: 'metermd-app').each do |other| %>
+  sudo ufw allow out to <%= other.addr_from(node).q %> \
+                     port 3000 \
+                     from <%= node.addr_from(other).q %> \
+                     comment 'nginx: accessing upstream <%= other.name.q %>'
+<% end %>
