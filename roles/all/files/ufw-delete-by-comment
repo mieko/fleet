@@ -10,17 +10,13 @@ fail() {
   exit 1
 }
 
-if [ -z "$1" ]; then
-  fail "usage: $0 COMMENT"
-fi
+[ ! -z "$1" ] || fail "usage: $0 COMMENT-PREFIX"
 
-while :; do
-  FIRST_MATCH=$(ufw status numbered | grep -F "# $1" | head -n 1)
-  if [ -z "$FIRST_MATCH" ]; then
-    # No more rules matching
-    break
-  fi
+delete_rule() {
+  while IFS='' read -r LINE ; do
+    NUMBER=$(echo "$LINE" | cut -d']' -f 1 | tr -d '[] ')
+    echo 'y' | ufw delete "$NUMBER" > /dev/null
+  done
+}
 
-  RULE_NUMBER=$(echo "$FIRST_MATCH" | cut -d']' -f1 | tr -d '[] ')
-  yes | ufw delete "$RULE_NUMBER" > /dev/null
-done
+ufw status numbered | grep -F "# $1" | tac | delete_rule

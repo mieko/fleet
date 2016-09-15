@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+set -e
+
+<%
+  leader = node.zone_peers.with(role: 'glusterfs-server').sample
+  # or...
+  # leader = node.zone_leader('glusterfs-server')
+%>
+
+if ! cat /etc/group | cut -d: -f1 | grep -q gluster-access ; then
+  sudo addgroup gluster-access
+fi
+
+[ -d /data ] || sudo mkdir -p /data
+
+# Rewrite fstab entry
+cat /etc/fstab | grep -v glusterfs > /tmp/fstab-without-glusterfs
+
+cat <<FSTAB | tee -a /tmp/fstab-without-glusterfs > /dev/null
+<%= leader.addr_from(node) %>:/pool /data glusterfs defaults,_netdev 0 0
+FSTAB
+
+sudo mv /tmp/fstab-without-glusterfs /etc/fstab
+
+if mount | grep ' on /data ' ; then
+  sudo umount /data || true
+fi
+
+sudo mount /data || true
+
+if ! mount | grep ' on /data' ; then
+  echo "/data ended up not mounted"
+  exit 1
+fi

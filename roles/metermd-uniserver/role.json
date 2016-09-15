@@ -2,8 +2,11 @@
   "includes": [
     "metermd-app",
     "nginx",
+    "postgres-client",
     "postgres-server",
+    "redis-client",
     "redis-server",
-    "glusterfs-server"
+    "glusterfs-server",
+    "glusterfs-client"
   ]
 }

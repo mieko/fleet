@@ -4,7 +4,7 @@ set -e
 sudo cp files/gluster-server.{key,crt} /etc/ssl/metermd
 
 [ -f /etc/ssl/glusterfs.pem ] || \
-  sudo ln -s /etc/ssl/metermd/gluster-client.crt /etc/ssl/glusterfs.pem
+  sudo ln -s /etc/ssl/metermd/gluster-server.crt /etc/ssl/glusterfs.pem
 
 [ -f /etc/ssl/glusterfs.key ] || \
-  sudo ln -s /etc/ssl/metermd/gluster-client.key /etc/ssl/glusterfs.key
+  sudo ln -s /etc/ssl/metermd/gluster-server.key /etc/ssl/glusterfs.key

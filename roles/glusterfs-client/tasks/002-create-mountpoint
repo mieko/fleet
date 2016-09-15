@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -e
-sudo mkdir /pool
-
-cat <<FSTAB | sudo tee -a /etc/fstab > /dev/null
-glusterd:/pool /pool glusterfs defaults,_netdev 0 0
-FSTAB
-
-sudo mount -t glusterfs glusterd:/pool /pool
