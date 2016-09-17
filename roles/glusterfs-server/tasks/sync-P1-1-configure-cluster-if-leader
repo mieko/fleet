@@ -1,0 +1,86 @@
+<% if node.zone_leader?('glusterfs-server') %>
+#!/usr/bin/env ruby
+
+def cmd(s)
+  puts "executing: #{s}"
+  `#{s}`
+end
+
+VOLUME='pool'
+REPLICA=2
+
+goal = <%= nodes.with(role: 'glusterfs-server')
+                .map {|n| n.addr_from(node) }.to_json %>
+
+existing = cmd("sudo gluster volume info #{VOLUME} | egrep '^Brick[0-9]+:' \
+                | cut -d' ' -f2 | cut '-d:' -f1").lines.map(&:chomp)
+existing = [] unless $?.success?
+add = goal - existing
+remove = existing - goal
+
+replace = remove.map do |rm|
+  replacement = add.shift
+  replacement.nil? ? nil : [rm, replacement]
+end.compact.to_h
+
+remove.reject! {|k| replace.key?(k) }
+
+partition_point = add.size - (add.size % REPLICA)
+add, orphans = add[0...partition_point], add[partition_point..-1]
+
+puts [:goal, goal].inspect
+puts [:existing, existing].inspect
+puts [:replace, replace].inspect
+puts [:remove, remove].inspect
+puts [:add, add].inspect
+puts [:orphans, orphans].inspect
+
+goal.each do |server|
+  cmd "sudo gluster peer probe #{server}"
+end
+
+# Lets do this
+unless existing.empty?
+  replace.each do |old, new|
+    cmd "sudo gluster volume replace-brick #{VOLUME} #{old}:/#{VOLUME} #{new}:/#{VOLUME} commit force"
+  end
+end
+
+unless add.empty?
+  bricks = add.map {|b| "#{b}:/#{VOLUME}"}.join(" ")
+  if existing.empty?
+    cmd "sudo gluster volume create #{VOLUME} replica #{REPLICA} #{bricks} force"
+    cmd "sudo gluster volume set #{VOLUME} client.ssl on"
+    cmd "sudo gluster volume set #{VOLUME} server.ssl on"
+    cmd "sudo gluster volume set #{VOLUME} auth.ssl-allow 'gluster-client,gluster-server'"
+    cmd "sudo gluster volume set #{VOLUME} ssl.cipher-list 'EECDH+AESGCM:AES256+EECDH'"
+    cmd "sudo gluster volume start #{VOLUME}"
+    cmd "sudo gluster volume bitrot #{VOLUME} enable"
+  else
+    cmd "sudo gluster volume add-brick #{VOLUME} replica #{REPLICA} #{bricks} force"
+  end
+end
+
+cmd "sudo gluster volume rebalance #{VOLUME} start"
+while cmd("sudo gluster volume rebalance #{VOLUME} status").match(/^in progress$/)
+  sleep 2
+end
+
+cmd "sudo gluster volume rebalance #{VOLUME} fix-layout start"
+while ! cmd("sudo gluster volume rebalance #{VOLUME} status").match(/^volume rebalance.*success$/)
+  sleep 2
+end
+
+
+(replace.keys + remove).each do |bye|
+  cmd "sudo gluster peer detach #{bye}"
+end
+
+
+<% else %>
+#!/usr/bin/env bash
+set -e
+
+echo "Skipping configure cluster: not leader"
+
+<% end %>

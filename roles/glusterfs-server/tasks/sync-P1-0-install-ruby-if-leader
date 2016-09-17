@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+# gluster is a fucking pain to configure: A volume must stay a multiple of the
+# replica count, so you end up having to do a fuckton of list intersections,
+# etc.  Bash is terrible at this.  I stopped at 200 lines or so, and it still
+# didn't handle edge cases.
+#
+# I considered writing this in Python on Perl, but the gear-change isn't worth
+# it.
+
+<% if node.zone_leader?('glusterfs-server') %>
+  sudo apt-get -yqq install ruby || true
+<% end %>

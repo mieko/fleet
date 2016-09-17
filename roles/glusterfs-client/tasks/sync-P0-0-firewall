@@ -12,9 +12,9 @@ sudo ufw-delete-by-comment 'glusterfs-client:'
                     from <%= node.addr_from(other).q %> \
                     comment 'glusterfs-client: allowing <%= other.name.dq %>'
 
-  sudo ufw allow out to <%= other.addr_from(node).q %> \
-                    proto udp \
-                    port 111 \
-                    from <%= node.addr_from(other).q %> \
-                    comment 'glusterfs-client: allowing <%= other.name.dq %>'
+  # sudo ufw allow out to <%= other.addr_from(node).q %> \
+  #                   proto udp \
+  #                   port 111 \
+  #                   from <%= node.addr_from(other).q %> \
+  #                   comment 'glusterfs-client: allowing <%= other.name.dq %>'
 <% end %>
