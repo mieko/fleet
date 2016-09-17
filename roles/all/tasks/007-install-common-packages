@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-set -e
-
-sudo apt-get -yqq install curl git tree

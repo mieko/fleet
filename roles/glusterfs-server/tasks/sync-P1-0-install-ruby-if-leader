@@ -6,7 +6,7 @@
 # didn't handle edge cases.
 #
 # I considered writing this in Python on Perl, but the gear-change isn't worth
-# it.
+# it.  Check out configure-cluster-if-leader
 
 <% if node.zone_leader?('glusterfs-server') %>
   sudo apt-get -yqq install ruby || true
