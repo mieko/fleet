@@ -8,6 +8,7 @@ ETCPG=/etc/postgresql/<%= node.definition['pg_version']%>/main
 cat - <<PG_IDENT | tee -a "$ETCPG/pg_ident.conf" > /dev/null
 # GENERATED IN CULT PROJECT: <%= __FILE__ %>
 cert             postgres-client    metermd
+cert             postgres-server    metermd
 PG_IDENT
 
 cat - <<SQL | psql

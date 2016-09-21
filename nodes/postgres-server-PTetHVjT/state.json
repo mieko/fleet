@@ -1,24 +1,24 @@
 {
-  "name": "postgres-server-EV9Q6k9m",
+  "name": "postgres-server-PTetHVjT",
   "size": "512mb",
   "zone": "nyc1",
   "image": "ubuntu-16-04",
-  "ssh_key_id": 3559636,
-  "id": 26408630,
-  "created_at": "2016-09-21T00:00:46Z",
-  "host": "162.243.172.167",
-  "ipv4_public": "162.243.172.167",
-  "ipv4_private": "10.136.21.79",
-  "ipv6_public": "2604:A880:0400:00D0:0000:0000:0A0A:C001",
+  "ssh_key_id": 3566792,
+  "id": 26427172,
+  "created_at": "2016-09-21T06:12:26Z",
+  "host": "198.199.81.214",
+  "ipv4_public": "198.199.81.214",
+  "ipv4_private": "10.136.24.242",
+  "ipv6_public": "2604:A880:0400:00D0:0000:0000:0A0F:9001",
   "ipv6_private": null,
   "meta": {
-    "id": 26408630,
-    "name": "postgres-server-EV9Q6k9m",
+    "id": 26427172,
+    "name": "postgres-server-PTetHVjT",
     "memory": 512,
     "vcpus": 1,
     "disk": 20,
     "locked": false,
-    "created_at": "2016-09-21T00:00:46Z",
+    "created_at": "2016-09-21T06:12:26Z",
     "status": "active",
     "backup_ids": [
 
@@ -85,14 +85,14 @@
     "networks": {
       "v4": [
         {
-          "ip_address": "162.243.172.167",
+          "ip_address": "198.199.81.214",
           "netmask": "255.255.255.0",
-          "gateway": "162.243.172.1",
+          "gateway": "198.199.81.1",
           "type": "public",
           "cidr": null
         },
         {
-          "ip_address": "10.136.21.79",
+          "ip_address": "10.136.24.242",
           "netmask": "255.255.0.0",
           "gateway": "10.136.0.1",
           "type": "private",
@@ -101,7 +101,7 @@
       ],
       "v6": [
         {
-          "ip_address": "2604:A880:0400:00D0:0000:0000:0A0A:C001",
+          "ip_address": "2604:A880:0400:00D0:0000:0000:0A0F:9001",
           "netmask": 64,
           "gateway": "2604:A880:0400:00D0:0000:0000:0000:0001",
           "type": "public",

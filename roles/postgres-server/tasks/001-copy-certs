@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+sudo gpasswd -a cult ssl-cert
+
 sudo cp files/postgres-server.{crt,key} /etc/ssl/metermd/
 
-sudo chown postgres:postgres /etc/ssl/metermd/postgres-server.{crt,key}
-sudo chmod u=r,go= /etc/ssl/metermd/postgres-server.key
+sudo chown root:ssl-cert /etc/ssl/metermd/postgres-server.{crt,key}
+sudo chmod ug=r,o= /etc/ssl/metermd/postgres-server.key

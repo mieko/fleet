@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 set -e
-
-CODENAME=$(lsb_release -sc)
+PG_VERSION=<%= node.definition['pg_version'].q %>
+CODE_NAME=$(lsb_release -sc)
 
 cat <<-APT | sudo tee /etc/apt/sources.list.d/pgdg.list
-deb https://apt.postgresql.org/pub/repos/apt/ $CODENAME-pgdg main
+deb https://apt.postgresql.org/pub/repos/apt/ $CODE_NAME-pgdg main $PG_VERSION
 APT
 
 cat files/ACCC4CF8-pgdg.asc | sudo apt-key add -
 
 cat <<-APT | sudo tee /etc/apt/sources.list.d/2ndquadrant.list
-deb [arch=amd64] http://packages.2ndquadrant.com/pglogical/apt/ $CODENAME-2ndquadrant main
+deb [arch=amd64] http://packages.2ndquadrant.com/pglogical/apt/ $CODE_NAME-2ndquadrant main
 APT
 cat files/AA7A6805-2ndquadrant.asc | sudo apt-key add -
 
