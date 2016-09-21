@@ -1,4 +1,4 @@
-<% if node.zone_leader?('glusterfs-server') %>
+<% if node.zone_leader?(role) %>
 #!/usr/bin/env ruby
 
 def cmd(s)
@@ -12,8 +12,8 @@ REPLICA=2
 goal = <%= nodes.with(role: 'glusterfs-server')
                 .map {|n| n.addr_from(node) }.to_json %>
 
-existing = cmd("sudo gluster volume info #{VOLUME} | egrep '^Brick[0-9]+:' \
-                | cut -d' ' -f2 | cut '-d:' -f1").lines.map(&:chomp)
+existing = cmd("sudo gluster volume info #{VOLUME} | egrep '^Brick[0-9]+:' " +
+               " | cut -d ' ' -f2 | cut -d ':' -f1").lines.map(&:chomp)
 existing = [] unless $?.success?
 add = goal - existing
 remove = existing - goal
@@ -61,15 +61,10 @@ unless add.empty?
   end
 end
 
-cmd "sudo gluster volume rebalance #{VOLUME} start"
-while cmd("sudo gluster volume rebalance #{VOLUME} status").match(/^in progress$/)
-  sleep 2
-end
-
-cmd "sudo gluster volume rebalance #{VOLUME} fix-layout start"
-while ! cmd("sudo gluster volume rebalance #{VOLUME} status").match(/^volume rebalance.*success$/)
-  sleep 2
-end
+# cmd "sudo gluster volume rebalance #{VOLUME} start"
+# while cmd("sudo gluster volume rebalance #{VOLUME} status").match(/^in progress$/)
+#   sleep 2
+# end
 
 
 (replace.keys + remove).each do |bye|

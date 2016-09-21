@@ -11,12 +11,7 @@ set -e
   sudo chmod +x /usr/local/share/rvm-installer/rvm.sh
 <% else %>
   <% if (rvm_user = node.definition['rvm_user']) %>
-
-    if [[ "$USER" != <%= rvm_user.q %> ]] ; then
-      # By default tasks only have +x for "cult".  We give +x for world
-      chmod ugo+x "$0"
-      exec sudo -H -u <%= rvm_user.q %> -- "$0" "$@"
-    fi
+    [[ "$USER" == <%= rvm_user.q %> ]] || exec sudo -H -u <%= rvm_user.q %> -- "$0" "$@"
   <% end %>
 
   gpg --import /usr/local/share/rvm-installer/rvm.asc

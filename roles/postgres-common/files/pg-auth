@@ -1,8 +1,10 @@
 #!/bin/sh
 
+DEFAULT_KEYS="postgres-server postgres-client"
+
 # This script sets up the PGSSL* environment variables to authorize with a
 # postgres server using mutual certificate authentication.  It can be sourced
-# from a shell or scipt to setup everything needed, other than a hostname.
+# from a shell or scipt to setup everything needed.
 
 
 fail() {
@@ -40,13 +42,20 @@ copy_key() {
 
 
 KEYNAME="$1"
-[ -z "$KEYNAME" ] && KEYNAME="postgres-client"
+if [ -z "$KEYNAME" ] ; then
+  for ATTEMPT in $DEFAULT_KEYS ; do
+    if [ -f "/etc/ssl/metermd/$ATTEMPT.key" ]; then
+      KEYNAME="$ATTEMPT"
+      break
+    fi
+  done
+fi
+
 
 PGSSLMODE="verify-ca"
 PGSSLROOTCERT="/etc/ssl/metermd/metermd-ca.crt"
 PGSSLCERT="/etc/ssl/metermd/$KEYNAME.crt"
-PGSSLKEY=$(copy_key /etc/ssl/metermd/"$KEYNAME".key*)
-PGUSER="$KEYNAME"
+PGSSLKEY=$(copy_key "/etc/ssl/metermd/$KEYNAME.key")
 
 [ -f "$PGSSLCERT" ] || return fail "\$PGSSLCERT isnt a file: $PGSSLCERT"
 [ -f "$PGSSLKEY" ]  || return fail "\$PGSSLKEY isnt a file: $PGSSLKEY"
@@ -55,7 +64,7 @@ export PGSSLMODE
 export PGSSLROOTCERT
 export PGSSLCERT
 export PGSSLKEY
-export PGSSLCOMPRESSION
-export PGUSER
+
+env | grep '^PGSSL'
 
 return 0
