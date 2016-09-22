@@ -19,7 +19,7 @@ MAX_RETRIES=10
       sleep 1
     done
 
-    eval $(sudo -i -u postgres pg-auth postgres-server)
+    eval $(sudo -i -u postgres pg-auth postgres-replication)
 
     <%
       conn_info = "host=#{master.addr_from(node)} " +

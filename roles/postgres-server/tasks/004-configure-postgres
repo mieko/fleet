@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-
 PGETC=/etc/postgresql/<%= node.definition['pg_version'] %>/main
 
 # Note: we accept connections from anyone, but in practice:
@@ -19,9 +18,9 @@ PG_HBA
 
 cat - <<PG_IDENT | sudo tee -a "$PGETC/pg_ident.conf"
 # GENERATED IN CULT PROJECT: <%= __FILE__ %>
-cert             postgres-client    metermd
-cert             postgres-server    metermd
-cert             postgres-server    replication
+cert             postgres-client         metermd
+cert             postgres-server         metermd
+cert             postgres-replication    replication
 PG_IDENT
 
 # Comment out any SSL settings

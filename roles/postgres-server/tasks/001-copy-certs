@@ -3,7 +3,7 @@ set -e
 
 sudo gpasswd -a cult ssl-cert
 
-sudo cp files/postgres-server.{crt,key} /etc/ssl/metermd/
+sudo cp files/postgres-{server,replication}.{crt,key} /etc/ssl/metermd/
 
-sudo chown root:ssl-cert /etc/ssl/metermd/postgres-server.{crt,key}
-sudo chmod ug=r,o= /etc/ssl/metermd/postgres-server.key
+sudo chown root:ssl-cert /etc/ssl/metermd/postgres-{server,replication}.{crt,key}
+sudo chmod ug=r,o= /etc/ssl/metermd/postgres-{server,replication}.key
