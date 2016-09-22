@@ -18,7 +18,19 @@ CULTMAP="$HOME/cult/hosts"
 mkdir -p $(basename "$CULTMAP")
 sudo rm -f "$CULTMAP"
 
+cat - <<HOSTS | tee "$CULTMAP"
+
+# cult: generated host map from <%= __FILE__ %>
 <% nodes.each do |n| %>
-  <% roles = n.build_order.map(&:name).join " " %>
-  echo "<%= n.addr_from(node) %> <%= n.name %> # <%= roles %>" | sudo tee -a "$CULTMAP"
+<%
+  role_string = n.build_order.map do |r|
+    (n.zone_leader?(r) ? '*' : '=') + r.name
+  end.join(', ')
+%>
+<%= n.addr_from(node) %> <%= n.name %> # cult: <%= role_string %>
 <% end %>
+
+HOSTS
+
+HOSTS=$(cat /etc/hosts | grep -v '# cult: '; cat "$CULTMAP")
+echo "$HOSTS" | sudo tee /etc/hosts

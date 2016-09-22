@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -e
+
+# Early in the provision process, base looks for attached storage block
+# devices, formats them if they're empty, and mounts them under /mnt.
+
+# We're looking for a volume that has /mnt/db*/postgresql, which means there's
+# an existing cluster, or we'll notice there are none, and then initialize the
+# first empty DB volume.
+
+fail() {
+  echo "$0: $1" >&2
+  exit 1
+}
+
+db_mounts() {
+  find /mnt -mindepth 1 -maxdepth 1 \
+            -regextype posix-egrep -regex '^/mnt/db[0-9]+$'
+}
+
+flag_empty_cluster() {
+  sudo touch '/var/lib/postgresql/empty-cluster'
+}
+
+copy_cluster_to_volume() {
+  DEST="$1"
+
+  [ -e "$DEST/postgresql" ] && fail "$DEST/postgresql existed.  WTF"
+
+  sudo cp -aRv '/var/lib/postgresql' "$DEST"
+  flag_empty_cluster
+}
+
+
+link_volume_to_local() {
+  $SRC="$1"
+  [ -e "$SRC/postgresql" ] || fail "$SRC/postgresql didn't exist"
+
+  sudo mv '/var/lib/postgresql' '/var/lib/postgresql.ORIGINAL'
+  sudo ln -s "$SRC/postgresql" '/var/lib'
+}
+
+
+has_cluster_p() {
+  [ -d "$1/postgresql" ]
+}
+
+
+for i in $(db_mounts) ; do
+  if has_cluster_p "$i" ; then
+    echo "Found existing cluster, adopting: $i"
+    link_volume_to_local "$i"
+    exit 0
+  fi
+done
+
+# Lazyness
+for i in $(db_mounts) ; do
+  if [ ! has_cluster_p "$1" ] ; then
+    echo "Copying skel cluster to blank volume: local -> $i"
+    copy_cluster_to_volume "$i"
+    echo "Adopting copied cluster: $i"
+    link_volume_to_local "$i"
+    exit 0
+  fi
+done
+
+echo "No volume attached, just using local install."
+flag_empty_cluster
+exit 0
