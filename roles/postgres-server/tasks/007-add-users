@@ -3,8 +3,6 @@ set -e
 
 [[ "$USER" == "postgres" ]] || exec sudo -H -u postgres -- "$0" "$@"
 
-ETCPG=/etc/postgresql/<%= node.definition['pg_version']%>/main
-
 source pg-auth postgres-server
 cat - <<SQL | psql
   CREATE ROLE metermd WITH SUPERUSER LOGIN;

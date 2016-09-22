@@ -2,16 +2,15 @@
 set -e
 
 <%
-  def apt_package(*names)
-    names.map do |name|
-      sprintf(name, node.definition['pg_version'])
-    end.join(' ')
+  def pg_deb(*names)
+    version = node.definition['pg_version']
+    names.map { |name| sprintf(name, version) }.join(' ')
   end
 %>
 
 # We don't want postgres to start when it is installed, because we have a
 # configuration for it.  RUNLEVEL=1 accomplishes this.
 RUNLEVEL=1 sudo -E apt-get -yqq install \
-  <%= apt_package('postgresql-%s',
-                  'postgresql-contrib-%s',
-                  'postgresql-%s-pglogical') %>
+  <%= pg_deb 'postgresql-%s',
+             'postgresql-contrib-%s',
+             'postgresql-%s-pglogical' %>

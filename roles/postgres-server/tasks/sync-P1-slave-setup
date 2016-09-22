@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+set -e
+
+<% master = node.zone_leader(role) %>
+
+PGVERSION=<%= node.definition['pg_version'].q %>
+PGDATA="/var/lib/postgresql/$PGVERSION/main"
+RECOVERY_CONF="$PGDATA/recovery.conf"
+MASTERFILE='/var/lib/postgresql/cluster-master'
+MAX_RETRIES=10
+
+<% if node != master %>
+  echo "Running slave-setup"
+  if [ -f '/var/lib/postgresql/empty-cluster' ] ; then
+    echo "Was an empty cluster.  Removing to prep for pg_basebackup"
+
+    sudo systemctl stop postgresql
+    while sudo ps aux | grep -v grep | grep -v cult | grep -q 'postgres\|pg_ctl' ; do
+      sleep 1
+    done
+
+    eval $(sudo -i -u postgres pg-auth postgres-server)
+
+    <%
+      conn_info = "host=#{master.addr_from(node)} " +
+                  "application_name=#{node.name} " +
+                  "user=replication " +
+                  "sslmode=$PGSSLMODE sslrootcert=$PGSSLROOTCERT " +
+                  "sslcert=$PGSSLCERT sslkey=$PGSSLKEY"
+    %>
+
+    for i in $(seq 1 $MAX_RETRIES) ; do
+      sudo bash -c "rm -rf $PGDATA/*"
+      sudo -u postgres \
+        pg_basebackup \
+          --write-recovery-conf \
+          --xlog \
+          --pgdata "$PGDATA" \
+          --no-password \
+          --dbname <%= conn_info.dq %> \
+          && break
+
+      if [[ "$i" -eq "$MAX_RETRIES" ]]; then
+        echo "Giving up."
+        exit 1
+      else
+        echo "pg_basebackup wasn't cool.  Thats normal with a herd."
+        echo "Sleeping then trying again..."
+        sleep $(( $i * 2 + $RANDOM % 5))
+      fi
+   done
+   echo "recovery_target_timeline = 'latest'" | sudo tee -a "$RECOVERY_CONF"
+
+   echo "Successfully got backup."
+   sudo rm -f '/var/lib/postgresql/empty-cluster'
+   echo <%= master.name.q %> | sudo tee "$MASTERFILE"
+
+   sudo systemctl start postgresql
+  else
+    # We have a new master than what we did last time.
+    if [[ -f "$MASTERFILE" && \
+          "$(cat "$MASTERFILE")" != <%= master.name.q %> ]]; then
+
+      echo "Changing master."
+      sudo -u postgres \
+           sed -i.bak -r -e 's/\bhost=[^ ]+/host=<%= Regexp.escape(master.name) %>/' \
+          "$RECOVERY_CONF"
+
+      sudo systemctl restart postgresql
+      echo <%= master.name.q %> | sudo tee "$MASTERFILE"
+    fi
+  fi
+<% end %>

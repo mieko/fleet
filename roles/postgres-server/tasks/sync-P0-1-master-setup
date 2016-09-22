@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+<% master = node.zone_leader(role) %>
+
+PGVERSION=<%= node.definition['pg_version'].q %>
+PGDATA="/var/lib/postgresql/$PGVERSION/main"
+MASTERFILE='/var/lib/postgresql/cluster-master'
+pg_ctl="/usr/lib/postgresql/$PGVERSION/bin/pg_ctl"
+
+<% if node == master %>
+  if [[ -f "$MASTERFILE" && \
+        "$(cat "$MASTERFILE")" != <%= node.name.q %>  ]] ; then
+    echo "Promoting myself to master."
+    sudo -u postgres "$pg_ctl" promote -D "$PGDATA"
+  fi
+  echo <%= node.name.q %> | sudo tee "$MASTERFILE"
+  sudo rm -f '/var/lib/postgresql/empty-cluster'
+<% end %>
