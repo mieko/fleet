@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+set -e
+
+cat - <<STUNNEL | sudo tee "/etc/stunnel/pgpool-in.conf" > /dev/null
+foreground = yes
+pid = /var/run/stunnel@pgpool-in.pid
+fips = no
+syslog = no
+
+[pgpool-in]
+client = no
+protocol = pgsql
+renegotiation = no
+verify = 2
+cafile = /etc/ssl/metermd/metermd-ca.crt
+cert = /etc/ssl/metermd/postgres-server.crt
+key = /etc/ssl/metermd/postgres-server.key
+checkHost = postgres-client
+sslVersion = TLSv1.2
+ciphers = EECDH+AESGCM:AES256+EECDH
+options = -NO_SSLv3
+options = CIPHER_SERVER_PREFERENCE
+
+# PostgreSQL doesn't support session tickets, so you end up being able to
+# connect once then immediate disconnects.
+options = NO_TICKET
+
+# FIXME: see the note in pgpool-backends
+accept = 5432
+connect = /var/run/postgresql/.s.PGSQL.9090
+
+setuid = postgres
+STUNNEL
+
+sudo systemctl enable stunnel@pgpool-in
+sudo systemctl start stunnel@pgpool-in
+sudo systemctl reload stunnel@pgpool-in

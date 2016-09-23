@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+set -e
+
+<%
+  servers = node.zone_peers.with(role: 'postgres-server').sort_by do |server|
+    server.zone_leader?('postgres-server') ? 0 : 1
+  end
+%>
+
+cat - <<STUNNEL | sudo tee "/etc/stunnel/pgpool-out.conf" > /dev/null
+foreground = yes
+pid = /var/run/stunnel@pgpool.pid
+fips = no
+syslog = no
+
+<% servers.each do |server| %>
+[pgpool-<%= server.name %>]
+client = yes
+protocol = pgsql
+renegotiation = no
+verify = 2
+cafile = /etc/ssl/metermd/metermd-ca.crt
+cert = /etc/ssl/metermd/postgres-server.crt
+key = /etc/ssl/metermd/postgres-server.key
+checkHost = postgres-server
+sslVersion = TLSv1.2
+ciphers = EECDH+AESGCM:AES256+EECDH
+options = -NO_SSLv3
+options = CIPHER_SERVER_PREFERENCE
+
+# PostgreSQL doesn't support session tickets, so you end up being able to
+# connect once then immediate disconnects.
+options = NO_TICKET
+accept  = /var/run/stunnel@pgpool-out/<%= server.name %>/.s.PGSQL.5432
+connect = <%= server.addr_from(node) %>:5432
+setuid = postgres
+<% end %>
+
+STUNNEL
+
+<% servers.each do |server| %>
+  DIR="/var/run/stunnel@pgpool-out/<%= server.name %>"
+  sudo mkdir -p "$DIR"
+<% end %>
+
+sudo systemctl enable stunnel@pgpool-out || true
+sudo systemctl start stunnel@pgpool-out || true
+sudo systemctl reload stunnel@pgpool-out || true

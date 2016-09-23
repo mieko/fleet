@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-RUNLEVEL=0 sudo -E apt-get -yqq install pgpool2
+RUNLEVEL=1 sudo -E apt-get -yqq install pgpool2
+sudo systemctl stop pgpool2 || true

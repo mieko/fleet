@@ -2,9 +2,9 @@
 set -e
 
 for i in files/*.{crt,key} ; do
-  BASENAME=$(basename "$i")
-  [ -f "/etc/ssl/metermd/$BASENAME" ] || sudo cp "$i" /etc/ssl/metermd/
-end
+  [ -f "/etc/ssl/metermd/$(basename "$i")" ] || sudo cp "$i" /etc/ssl/metermd/
+done
 
 sudo chown root:ssl-cert /etc/ssl/metermd/postgres-server.{crt,key}
 sudo chmod ug=r,o= /etc/ssl/metermd/postgres-server.key
+sudo gpasswd -a cult ssl-cert || true

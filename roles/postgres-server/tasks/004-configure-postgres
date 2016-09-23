@@ -13,14 +13,17 @@ hostssl  all          all          ::1/0              cert clientcert=1 map=cert
 # Allow replication using the same cert
 hostssl  replication  replication  255.255.255.255/0  cert clientcert=1 map=cert
 hostssl  replication  replication  ::1/0              cert clientcert=1 map=cert
-
 PG_HBA
 
 cat - <<PG_IDENT | sudo tee -a "$PGETC/pg_ident.conf"
 # GENERATED IN CULT PROJECT: <%= __FILE__ %>
-cert             postgres-client         metermd
-cert             postgres-server         metermd
-cert             postgres-replication    replication
+#
+# Keep in mind: pgpool represents itself as postgres-server because it has to
+# use the same key for clients and servers (it also has our key!)
+#
+cert             /postgres\-(client|server) metermd
+cert             /postgres\-(client|server) postgres
+cert             postgres-replication       replication
 PG_IDENT
 
 # Comment out any SSL settings
@@ -33,13 +36,13 @@ cat - <<PG_CONF | sudo tee -a "$PGETC/postgresql.conf"
 # GENERATED IN CULT PROJECT: <%= __FILE__ %>
 listen_addresses = '*'
 ssl = true
-ssl_ciphers = 'EECDH+AESGCM:AES256+EECDH'
-ssl_prefer_server_ciphers = on
-ssl_ecdh_curve = 'prime256v1'
-
 ssl_ca_file   = '/etc/ssl/metermd/metermd-ca.crt'
 ssl_cert_file = '/etc/ssl/metermd/postgres-server.crt'
 ssl_key_file  = '/etc/ssl/metermd/postgres-server.key'
+
+ssl_ciphers = 'EECDH+AESGCM:AES256+EECDH'
+ssl_prefer_server_ciphers = on
+ssl_ecdh_curve = 'prime256v1'
 
 # Static, many overwritten in dynamic.conf
 max_connections = 300

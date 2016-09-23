@@ -29,6 +29,7 @@ copy_key() {
   if [ ! -f "$USER_KEY" ] || ! diff "$USER_KEY" "$1" > /dev/null ; then
     if [ ! -d "$USER_KEY_DIR" ]; then
       mkdir -p "$USER_KEY_DIR"
+      chown "$USER" "$USER_KEY_DIR"
       chmod u=rwx,go= "$USER_KEY_DIR"
     fi
 

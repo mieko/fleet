@@ -3,9 +3,9 @@ Description=Modified Instanced STUNNEL
 After=network.target
 
 [Service]
-ExecStart=/usr/bin/stunnel4 /etc/stunnel/%I.conf
+ExecStart=/usr/bin/stunnel4 /etc/stunnel/%i.conf
 ExecReload=/bin/kill -HUP $MAINPID
-PIDFile=/var/run/stunnel@%I.pid
+PIDFile=/var/run/stunnel@%i.pid
 Type=simple
 Restart=on-failure
 PrivateDevices=true

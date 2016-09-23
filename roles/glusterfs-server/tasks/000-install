@@ -2,4 +2,4 @@
 set -e
 
 # Note: this starts it anyway.
-RUNLEVEL=0 sudo -E apt-get -yqq install glusterfs-server
+RUNLEVEL=1 sudo -E apt-get -yqq install glusterfs-server

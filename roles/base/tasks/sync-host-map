@@ -19,7 +19,6 @@ mkdir -p $(basename "$CULTMAP")
 sudo rm -f "$CULTMAP"
 
 cat - <<HOSTS | tee "$CULTMAP"
-
 # cult: generated host map from <%= __FILE__ %>
 <% nodes.each do |n| %>
 <%
@@ -29,7 +28,6 @@ cat - <<HOSTS | tee "$CULTMAP"
 %>
 <%= n.addr_from(node) %> <%= n.name %> # cult: <%= role_string %>
 <% end %>
-
 HOSTS
 
 HOSTS=$(cat /etc/hosts | grep -v '# cult: '; cat "$CULTMAP")

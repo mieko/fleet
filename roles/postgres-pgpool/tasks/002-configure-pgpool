@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -e
+
+# NOTE: This must stay somewhat synchonized with the pg_hba.conf in
+# postgres-server
+
+PPETC="/etc/pgpool2"
+
+cat - <<PP_HBA | sudo tee -a "$PPETC/pool_hba.conf"
+# GENERATED IN CULT PROJECT: <%= __FILE__ %>
+#
+# pgpool doesn't support "hostssl" or "cert clientcert=1 map=cert" via pg_ident.
+# We generate this anyway, but pool_hba support is disabled in pgpool.conf
+# for now.
+#
+# hostssl  all          all          255.255.255.255/0  cert clientcert=1 map=cert
+# hostssl  all          all          ::1/0              cert clientcert=1 map=cert
+PP_HBA
+
+# Comment out any SSL settings and backend settings
+sudo sed -r -i.bak -e 's/^(ssl|backend|port|listen_addresses)/#\1/;' "$PPETC/pgpool.conf"
+
+cat - <<PG_CONF | sudo tee -a "$PPETC/pgpool.conf"
+# GENERATED IN CULT PROJECT: <%= __FILE__ %>
+# FIXME: There is a bug in <= 3.5.3 that won't start with a blank listen_addresses,
+# so we just listen randomly (we're firewalled)
+listen_addresses = '*'
+port = 9090
+max_connections = 1
+
+# These aren't all accepted, but we hope they will be one day, and we keep
+# them here to tag.
+ssl = false
+PG_CONF
+
+cat - <<EOF | sudo tee "$PPETC/dynamic.conf"
+# This file was created in Cult via <%= __FILE__ %>
+# It should be replaced on sync with an actual configuration
+EOF
