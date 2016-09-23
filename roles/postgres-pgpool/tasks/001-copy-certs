@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -e
+
+for i in files/*.{crt,key} ; do
+  BASENAME=$(basename "$i")
+  [ -f "/etc/ssl/metermd/$BASENAME" ] || sudo cp "$i" /etc/ssl/metermd/
+end
+
+sudo chown root:ssl-cert /etc/ssl/metermd/postgres-server.{crt,key}
+sudo chmod ug=r,o= /etc/ssl/metermd/postgres-server.key

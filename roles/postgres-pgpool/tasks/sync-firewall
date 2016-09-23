@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -e
+
+sudo ufw-delete-by-comment 'postgres-pgpool:'
+
+<%
+  clients = node.zone_peers.with(role: 'postgres-client')
+  servers = node.zone_peers.with(role: 'postgres-server')
+%>
+
+<% clients.each do |other| %>
+  sudo ufw allow in to <%= node.addr_from(other).q %> \
+                    port 5432 \
+                    from <%= other.addr_from(node).q %> \
+                    comment 'postgres-pgpool: servicing <%= other.name.q %>'
+<% end %>
+
+<% servers.each do |other| %>
+  sudo ufw allow out to <%= other.addr_from(node).q %> \
+                     port 5432 \
+                     from <%= node.addr_from(other).q %> \
+                     comment 'postgres-pgpool: accessing <%= other.name.q %>'
+<% end %>

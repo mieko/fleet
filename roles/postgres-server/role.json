@@ -1,3 +1,5 @@
 {
-  "includes": ["postgres-common"]
+  "includes": [
+    "postgres-common"
+  ]
 }
