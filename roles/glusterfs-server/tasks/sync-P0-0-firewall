@@ -7,16 +7,16 @@ sudo ufw-delete-by-comment 'glusterfs-server:'
 <% ports = "111,24007:24017,49151:49161" %>
 
 <% node.zone_peers.with(role: /^glusterfs/).each do |other| %>
-  echo "Allowing <%= other.name.q %>"
-  sudo ufw allow in to <%= node.addr_from(other).q %> \
+  echo "Allowing <%= other.name.e %>"
+  sudo ufw allow in to <%= node.addr_from(other).e %> \
                     proto tcp \
                     port <%= ports %> \
-                    from <%= other.addr_from(node).q %> \
+                    from <%= other.addr_from(node).e %> \
                     comment 'glusterfs-server: accepting <%= other.name.dq %>'
 
-  sudo ufw allow out to <%= other.addr_from(node).q %> \
+  sudo ufw allow out to <%= other.addr_from(node).e %> \
                     proto tcp \
                     port <%= ports %> \
-                    from <%= node.addr_from(other).q %> \
+                    from <%= node.addr_from(other).e %> \
                     comment 'glusterfs-server: allowing <%= other.name.dq %>'
 <% end %>

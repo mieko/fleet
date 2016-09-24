@@ -6,9 +6,9 @@ set -e
 sudo ufw-delete-by-comment 'glusterfs-client:'
 
 <% node.zone_peers.with(role: 'glusterfs-server').each do |other| %>
-  sudo ufw allow out to <%= other.addr_from(node).q %> \
+  sudo ufw allow out to <%= other.addr_from(node).e %> \
                     proto tcp \
                     port <%= ports %> \
-                    from <%= node.addr_from(other).q %> \
+                    from <%= node.addr_from(other).e %> \
                     comment 'glusterfs-client: allowing <%= other.name.dq %>'
 <% end %>

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
-PG_VERSION=<%= node.definition['pg_version'].q %>
-CODE_NAME=$(lsb_release -sc)
+PG_VERSION=<%= node.definition['pg_version'].e %>
+CODE_NAME="$(lsb_release -sc)"
 
 cat <<-APT | sudo tee /etc/apt/sources.list.d/pgdg.list
 deb https://apt.postgresql.org/pub/repos/apt/ $CODE_NAME-pgdg main $PG_VERSION

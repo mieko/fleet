@@ -3,8 +3,8 @@
 sudo ufw-delete-by-comment 'metermd-app:'
 
 <% node.zone_peers.with(role: 'nginx').each do |other| %>
-  sudo ufw allow in to <%= node.addr_from(other).q %> \
+  sudo ufw allow in to <%= node.addr_from(other).e %> \
                     port 3000 \
-                    from <%= other.addr_from(node).q %> \
-                    comment 'metermd-app: servicing frontend <%= other.name.q %>'
+                    from <%= other.addr_from(node).e %> \
+                    comment 'metermd-app: servicing frontend <%= other.name.dq %>'
 <% end %>

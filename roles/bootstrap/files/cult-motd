@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 set -e
 
-NODE=<%= node.name.sq %>
-PROVIDER=<%= node.provider.name.sq %>
-ZONE=<%= node.zone.sq %>
-ROLES=<%= node.build_order.map(&:name).join(' ').sq %>
-CREATED_AT=<%= Time.now.to_s.sq %>
-SIZE=<%= node.size.sq %>
-IMAGE=<%= node.image.sq %>
-IPV4_PUBLIC=<%= node.ipv4_public.sq %>
-IPV4_PRIVATE=<%= node.ipv4_private.sq %>
+NODE=<%= node.name.e %>
+PROVIDER=<%= node.provider.name.e %>
+ZONE=<%= node.zone.e %>
+ROLES=<%= node.build_order.map(&:name).join(' ').e %>
+CREATED_AT=<%= Time.now.to_s.e %>
+SIZE=<%= node.size.e %>
+IMAGE=<%= node.image.e %>
+IPV4_PUBLIC=<%= node.ipv4_public.e %>
+IPV4_PRIVATE=<%= node.ipv4_private.e %>
 
 LEADER_FILE=~cult/cult/leader-of
 

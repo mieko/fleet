@@ -37,7 +37,7 @@ MAX_RETRIES=10
           --xlog \
           --pgdata "$PGDATA" \
           --no-password \
-          --dbname <%= conn_info.dq %> \
+          --dbname <%= conn_info.e %> \
           && break
 
       if [[ "$i" -eq "$MAX_RETRIES" ]]; then

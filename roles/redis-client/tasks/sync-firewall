@@ -4,8 +4,8 @@ set -e
 sudo ufw-delete-by-comment 'redis-client:'
 
 <% node.zone_peers.with(role: 'redis-server').each do |other| %>
-  sudo ufw allow out to <%= other.addr_from(node).q %> \
+  sudo ufw allow out to <%= other.addr_from(node).e %> \
                      port 6379 \
-                     from <%= node.addr_from(other).q %> \
-                     comment 'redis-client: accessing <%= other.name.q %>'
+                     from <%= node.addr_from(other).e %> \
+                     comment 'redis-client: accessing <%= other.name.dq %>'
 <% end %>

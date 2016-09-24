@@ -14,15 +14,15 @@ sudo ufw-delete-by-comment 'postgres-server:'
 %>
 
 <% allowed_incoming.each do |other| %>
-  sudo ufw allow in to <%= node.addr_from(other).q %> \
+  sudo ufw allow in to <%= node.addr_from(other).e %> \
                     port 5432 \
-                    from <%= other.addr_from(node).q %> \
-                    comment 'postgres-server: servicing <%= other.name.q %>'
+                    from <%= other.addr_from(node).e %> \
+                    comment 'postgres-server: servicing <%= other.name.dq %>'
 <% end %>
 
 <% servers.each do  |other| %>
-  sudo ufw allow out to <%= other.addr_from(node).q %> \
+  sudo ufw allow out to <%= other.addr_from(node).e %> \
                      port 5432 \
-                     from <%= node.addr_from(other).q %> \
-                     comment 'postgres-server: accessing <%= other.name.q %>'
+                     from <%= node.addr_from(other).e %> \
+                     comment 'postgres-server: accessing <%= other.name.dq %>'
 <% end %>
