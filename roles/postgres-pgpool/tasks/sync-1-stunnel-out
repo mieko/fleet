@@ -24,7 +24,7 @@ cert = /etc/ssl/metermd/postgres-server.crt
 key = /etc/ssl/metermd/postgres-server.key
 checkHost = postgres-server
 sslVersion = TLSv1.2
-ciphers = EECDH+AESGCM:AES256+EECDH
+ciphers = EECDH+AESGCM
 options = -NO_SSLv3
 options = CIPHER_SERVER_PREFERENCE
 
@@ -43,6 +43,6 @@ STUNNEL
   sudo mkdir -p "$DIR"
 <% end %>
 
-sudo systemctl enable stunnel@pgpool-out || true
-sudo systemctl start stunnel@pgpool-out || true
+sudo systemctl enable stunnel@pgpool-out
+sudo systemctl start stunnel@pgpool-out
 sudo systemctl reload stunnel@pgpool-out || true

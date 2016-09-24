@@ -16,5 +16,6 @@ EOF
 sudo cat "$PPETC/pgpool.conf.in" "$PPETC/dynamic.conf" | \
   sudo tee -a "$PPETC/pgpool.conf" > /dev/null
 
+sudo systemctl enable pgpool2
 sudo systemctl start pgpool2
-sudo systemctl reload pgpool2
+sudo systemctl reload pgpool2 || true

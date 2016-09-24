@@ -53,7 +53,7 @@ unless add.empty?
     cmd "sudo gluster volume set #{VOLUME} client.ssl on"
     cmd "sudo gluster volume set #{VOLUME} server.ssl on"
     cmd "sudo gluster volume set #{VOLUME} auth.ssl-allow 'gluster-client,gluster-server'"
-    cmd "sudo gluster volume set #{VOLUME} ssl.cipher-list 'EECDH+AESGCM:AES256+EECDH'"
+    cmd "sudo gluster volume set #{VOLUME} ssl.cipher-list 'EECDH+AESGCM'"
     cmd "sudo gluster volume start #{VOLUME}"
     cmd "sudo gluster volume bitrot #{VOLUME} enable"
   else

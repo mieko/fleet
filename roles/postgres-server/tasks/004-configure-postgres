@@ -40,7 +40,7 @@ ssl_ca_file   = '/etc/ssl/metermd/metermd-ca.crt'
 ssl_cert_file = '/etc/ssl/metermd/postgres-server.crt'
 ssl_key_file  = '/etc/ssl/metermd/postgres-server.key'
 
-ssl_ciphers = 'EECDH+AESGCM:AES256+EECDH'
+ssl_ciphers = 'EECDH+AESGCM'
 ssl_prefer_server_ciphers = on
 ssl_ecdh_curve = 'prime256v1'
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
-LEADER_FILE=~cult/cult/leader-of
+ZONE_LEADERS="$HOME/cult/zone-leaders"
 
 <%
   leader_of = node.build_order.select do |role|
@@ -9,7 +9,7 @@ LEADER_FILE=~cult/cult/leader-of
 %>
 
 <% if leader_of.empty? %>
-  rm -f "$LEADER_FILE"
+  rm -f "$ZONE_LEADERS"
 <% else %>
-  echo <%= leader_of.join(" ").sq %> | tee "$LEADER_FILE"
+  echo <%= leader_of.join(" ").e %> | tee "$ZONE_LEADERS"
 <% end %>

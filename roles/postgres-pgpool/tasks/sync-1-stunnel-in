@@ -17,7 +17,7 @@ cert = /etc/ssl/metermd/postgres-server.crt
 key = /etc/ssl/metermd/postgres-server.key
 checkHost = postgres-client
 sslVersion = TLSv1.2
-ciphers = EECDH+AESGCM:AES256+EECDH
+ciphers = EECDH+AESGCM
 options = -NO_SSLv3
 options = CIPHER_SERVER_PREFERENCE
 
