@@ -14,7 +14,7 @@ Cult.project.instance_eval do
   # This marks the version of Cult the project was created with.  If future
   # versions of Cult have backward-incompatible changes, it'll know you expect
   # the behavior of this version.
-  self.cult_version = '0.1.0.pre'
+  self.cult_version = '0.1.4.pre'
 
   # Git integration is great, it basically makes sure you stay in sync.  If
   # this was enabled with the generator (it wasn't), you've already got a Git
@@ -24,5 +24,5 @@ Cult.project.instance_eval do
   # If you don't set this, the project's default_provider will be nil until one
   # is created, and otherwise, the first one.  This really only comes into play
   # when you're using multiple providers.
-  self.default_provider = providers['digital-ocean']
+  self.default_provider = 'digital-ocean'
 end
