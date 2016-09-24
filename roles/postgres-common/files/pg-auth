@@ -66,6 +66,6 @@ export PGSSLROOTCERT
 export PGSSLCERT
 export PGSSLKEY
 
-env | grep '^PGSSL'
+env | grep '^PGSSL' | cat
 
 return 0
