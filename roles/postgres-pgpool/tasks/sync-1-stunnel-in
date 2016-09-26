@@ -2,6 +2,7 @@
 set -e
 
 cat - <<STUNNEL | sudo tee "/etc/stunnel/pgpool-in.conf" > /dev/null
+# GENERATED IN CULT PROJECT: <%= __FILE__ %>
 foreground = yes
 pid = /var/run/stunnel@pgpool-in.pid
 fips = no

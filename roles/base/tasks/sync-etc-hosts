@@ -11,13 +11,12 @@ set -e
 # 192.168.1.1 node-name # cult: base *role1 role2 role3
 #
 # Where the * signifies that the node is the zone leader of that role.
-#
 
 CULTMAP="$HOME/cult/hosts"
 mkdir -p $(basename "$CULTMAP")
 sudo rm -f "$CULTMAP"
 
-cat - <<HOSTS | tee "$CULTMAP"
+cat - <<HOSTS | tee "$CULTMAP" > /dev/null
 # cult: generated host map from <%= __FILE__ %>
 <% nodes.each do |n| %>
 <%
@@ -29,5 +28,5 @@ cat - <<HOSTS | tee "$CULTMAP"
 <% end %>
 HOSTS
 
-HOSTS=$(cat /etc/hosts | grep -v '# cult: '; cat "$CULTMAP")
-echo "$HOSTS" | sudo tee /etc/hosts > /dev/null
+NEW_ETC_HOSTS=$(cat /etc/hosts | grep -v '# cult: '; cat "$CULTMAP")
+echo "$NEW_ETC_HOSTS" | sudo tee /etc/hosts > /dev/null

@@ -9,8 +9,13 @@ NODE_NAME=<%= node.name.e %>
 echo "$NODE_NAME" > /etc/hostname
 hostname "$NODE_NAME"
 
-HOSTS=$(cat /etc/hosts | sed -e 's/#.*//g' | sed -e 's/\t/ /g' | tr -s ' ' | \
-        grep -v '^\s*$' | cut -d' ' -f2-)
+# read /etc/hosts in a canonical format: Comments removed, whitespace
+# collapsed, and return the hostnames.
+HOSTS=$(cat /etc/hosts | sed -e 's/#.*//g' \
+                       | sed -e 's/\t/ /g' \
+                       | tr -s ' ' \
+                       | grep -v '^\s*$' \
+                       | cut -d ' ' -f2-)
 
 # See if we're in hosts
 if ! echo "$HOSTS" | grep -E -q "\b$NODE_NAME\b" ; then
@@ -19,4 +24,4 @@ if ! echo "$HOSTS" | grep -E -q "\b$NODE_NAME\b" ; then
 fi
 
 # Make the SSH experience a little nicer with the full hostname in the prompt
-echo "export PS1='\u@\H:\w\$ '" > /etc/bash.bashrc
+echo "export PS1='\u@\H:\w\$ '" >> /etc/bash.bashrc

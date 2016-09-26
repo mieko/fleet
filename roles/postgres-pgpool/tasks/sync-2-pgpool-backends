@@ -10,7 +10,7 @@ set -e
 PPETC="/etc/pgpool2"
 
 cat - <<DYNAMIC_CONF | sudo tee "$PPETC/dynamic.conf"
-
+# GENERATED IN CULT PROJECT: <%= __FILE__ %>
 load_balance_mode = on
 master_slave_mode = on
 master_slave_sub_mode = 'stream'
@@ -22,7 +22,6 @@ backend_port<%= i %> = 5432
 backend_weight<%= i %> = 1
 # backend_data_directory<%= i %> = '/var/lib/pgsql/data'
 # backend_flag<%= i %> = 'ALLOW_TO_FAILOVER'
-
 
 <% end %>
 DYNAMIC_CONF

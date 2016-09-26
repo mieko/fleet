@@ -3,15 +3,9 @@ set -e
 
 <% leader = node.zone_leader('glusterfs-server') %>
 
-if ! cat /etc/group | cut -d: -f1 | grep -q gluster-access ; then
-  sudo addgroup gluster-access
-fi
+[ -d /data ] || sudo mkdir /data
 
-if [ ! -d /data ] ; then
-  sudo mkdir -p /data
-fi
-
-# Rewrite fstab entry
+# Remove existing glusterfs mounts from fstab
 cat /etc/fstab | grep -v glusterfs > /tmp/fstab-without-glusterfs
 
 cat <<FSTAB | tee -a /tmp/fstab-without-glusterfs > /dev/null
@@ -20,6 +14,4 @@ FSTAB
 
 sudo mv /tmp/fstab-without-glusterfs /etc/fstab
 
-if ! mount | grep ' on /data ' ; then
-  sudo mount /data
-fi
+sudo mount | grep -q ' on /data ' || sudo mount /data

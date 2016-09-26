@@ -29,7 +29,8 @@ PG_IDENT
 # Comment out any SSL settings
 sudo sed -i.bak -e 's/^ssl/#ssl/;' "$PGETC/postgresql.conf"
 <%
-  listen_addresses = ['localhost', node.ipv4_private, node.ipv6_private].compact.join(',')
+  listen_addresses = ['localhost',
+                      node.ipv4_private, node.ipv6_private].compact.join(',')
 %>
 
 cat - <<PG_CONF | sudo tee -a "$PGETC/postgresql.conf"

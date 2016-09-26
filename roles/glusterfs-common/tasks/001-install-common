@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-sudo apt-get install -yqq glusterfs-common
+sudo apt-get -yqq install glusterfs-common

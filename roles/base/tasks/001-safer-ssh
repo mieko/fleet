@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-cat <<SSHD_CONFIG | sudo tee -a /etc/ssh/sshd_config
+cat - <<SSHD_CONFIG | sudo tee -a /etc/ssh/sshd_config > /dev/null
 PasswordAuthentication no
 ChallengeResponseAuthentication no
 SSHD_CONFIG

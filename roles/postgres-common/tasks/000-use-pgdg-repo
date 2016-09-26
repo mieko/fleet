@@ -10,7 +10,7 @@ APT
 cat files/ACCC4CF8-pgdg.asc | sudo apt-key add -
 
 cat <<-APT | sudo tee /etc/apt/sources.list.d/2ndquadrant.list
-deb [arch=amd64] http://packages.2ndquadrant.com/pglogical/apt/ $CODE_NAME-2ndquadrant main
+deb [arch=amd64] http://packages.2ndquadrant.com/pglogical/apt/ $CODE_NAME-2ndquadrant-testing main
 APT
 cat files/AA7A6805-2ndquadrant.asc | sudo apt-key add -
 

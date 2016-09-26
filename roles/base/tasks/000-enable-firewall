@@ -7,10 +7,10 @@ sudo ufw --force reset
 sudo ufw default deny incoming
 sudo ufw default deny outgoing
 
-sudo ufw allow in ssh comment 'base: servicing ssh'       # Cult control
-sudo ufw allow out domain comment 'base: accessing DNS'   # AKA DNS
-sudo ufw allow out http comment 'base: accessing http'    # Ubuntu packages
-sudo ufw allow out https comment 'base: acessing https'   # Ubuntu packages
-sudo ufw allow out git comment 'base: accessing git'      # For gems, etc
+sudo ufw allow in  ssh    comment 'base: servicing ssh'
+sudo ufw allow out domain comment 'base: accessing DNS'
+sudo ufw allow out http   comment 'base: accessing http'
+sudo ufw allow out https  comment 'base: acessing https'
+sudo ufw allow out git    comment 'base: accessing git'
 
 sudo ufw --force enable

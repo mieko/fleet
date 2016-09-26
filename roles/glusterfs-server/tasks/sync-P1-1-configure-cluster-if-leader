@@ -1,13 +1,14 @@
 <% if node.zone_leader?(role) %>
 #!/usr/bin/env ruby
 
+VOLUME='pool'
+REPLICA=2
+
 def cmd(s)
   puts "executing: #{s}"
   `#{s}`
 end
 
-VOLUME='pool'
-REPLICA=2
 
 goal = <%= nodes.with(role: 'glusterfs-server')
                 .map {|n| n.addr_from(node) }.to_json %>
@@ -15,6 +16,7 @@ goal = <%= nodes.with(role: 'glusterfs-server')
 existing = cmd("sudo gluster volume info #{VOLUME} | egrep '^Brick[0-9]+:' " +
                " | cut -d ' ' -f2 | cut -d ':' -f1").lines.map(&:chomp)
 existing = [] unless $?.success?
+
 add = goal - existing
 remove = existing - goal
 
@@ -60,11 +62,6 @@ unless add.empty?
     cmd "sudo gluster volume add-brick #{VOLUME} replica #{REPLICA} #{bricks} force"
   end
 end
-
-# cmd "sudo gluster volume rebalance #{VOLUME} start"
-# while cmd("sudo gluster volume rebalance #{VOLUME} status").match(/^in progress$/)
-#   sleep 2
-# end
 
 
 (replace.keys + remove).each do |bye|

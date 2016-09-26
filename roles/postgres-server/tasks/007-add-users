@@ -3,10 +3,10 @@ set -e
 
 [[ "$USER" == "postgres" ]] || exec sudo -H -u postgres -- "$0" "$@"
 
-source pg-auth postgres-server
+source pg-auth -k postgres-server
 cat - <<SQL | psql
   CREATE ROLE replication WITH REPLICATION LOGIN;
 
   CREATE ROLE metermd WITH SUPERUSER LOGIN;
-  CREATE DATABASE test OWNER metermd;
+  CREATE DATABASE test OWNER postgres;
 SQL

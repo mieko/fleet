@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
+# We're fine with this running immediately.
 sudo apt-get -yqq install fail2ban

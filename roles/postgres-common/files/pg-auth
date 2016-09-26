@@ -1,71 +1,149 @@
-#!/bin/sh
-
-DEFAULT_KEYS="postgres-server postgres-client"
+#!/usr/bin/env bash
 
 # This script sets up the PGSSL* environment variables to authorize with a
 # postgres server using mutual certificate authentication.  It can be sourced
-# from a shell or scipt to setup everything needed.
+# from a shell or scipt to setup everything needed.  See --help
+
+# We may be sourced: don't set -e just yet.
+
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]] ; then
+  set -e
+  DEFAULT_KEYS="postgres-server postgres-client"
+
+  fail() {
+    echo "$0: $1" >&2
+    exit 1
+  }
+
+  # postgres has this hand-holding thing where it makes sure the private
+  # key is owned by the user and has no group access.  So instead of doing
+  # the cool Unix thing, and setting the group of the key to something useful,
+  # and managing access by who is in the group, we have to copy the key
+  # somewhere else, and make sure it's 0600 to the current user.
+  #
+  # This will copy the key from /etc/ssl/metermd/$1.key to ~/.postgresl/keys
+  # if needed, and print the new path.  "if needed" means the user's copy doesn't
+  # exist, or they both do, and the global copy differs from the user copy.
+  copy_key() {
+    [ -f "$1" ] || fail "Key doesn't exist: $1"
+
+    USER_KEY_DIR=~/.postgresql/keys
+    USER_KEY="$USER_KEY_DIR/$(basename "$1")"
 
 
-fail() {
-  echo "$0: $1" >&2
-  return 1
-}
+    if [ ! -f "$USER_KEY" ] || ! cmp -s "$USER_KEY" "$1" > /dev/null ; then
+      if [ ! -d "$USER_KEY_DIR" ]; then
+        mkdir -p "$USER_KEY_DIR"
+        chown "$USER" "$USER_KEY_DIR"
+        chmod u=rwx,go= "$USER_KEY_DIR"
+      fi
 
-# postgres has this hand-holding thing where it makes sure the private
-# key is owned by the user and has no group access.  So instead of doing
-# the cool Unix thing, and setting the group of the key to something cool,
-# and managing access by who is in the group, we have to copy the key
-# somewhere else, and make sure it's 0600 to the current user.
-#
-# This will copy the key from /etc/ssl/metermd/($1).key to ~/.postgresl/keys
-# if needed, and print the new path.  "if needed" means the user's copy doesn't
-# exist, or they both do, and the global copy differs from the user copy.
-copy_key() {
-  USER_KEY_DIR=~/.postgresql/keys
-  USER_KEY="$USER_KEY_DIR/$(basename "$1")"
-
-
-  if [ ! -f "$USER_KEY" ] || ! diff "$USER_KEY" "$1" > /dev/null ; then
-    if [ ! -d "$USER_KEY_DIR" ]; then
-      mkdir -p "$USER_KEY_DIR"
-      chown "$USER" "$USER_KEY_DIR"
-      chmod u=rwx,go= "$USER_KEY_DIR"
+      cp "$1" "$USER_KEY"
+      chown "$USER" "$USER_KEY"
+      chmod u=rw,g=,o= "$USER_KEY"
     fi
 
-    cp "$1" "$USER_KEY"
-    chown "$USER" "$USER_KEY"
-    chmod u=rw,g=,o= "$USER_KEY"
+    echo "$USER_KEY"
+  }
+
+  show_help() {
+  cat <<EOD | sed -re 's/^\s{4}//'
+    pg-auth: Set up postgresql client authorization environment
+    variables.
+
+    Usage:
+      As a command:
+        pg-auth [-k keyname] command...
+      Sourced:
+        source pg-auth [-k keyname]
+
+    If the -k option is specified, /etc/ssl/metermd/KEYNAME.key
+    is used, otherwise the list of default keys are tried, which
+    are:
+
+      > $DEFAULT_KEYS
+
+    If a command is given, it is executed with the PGSSL*
+    environment variables properly set.  Otherwise, a list of
+    export KEY=VALUE pairs of the environment you'd need to set is
+    printed.  This is suitable for `eval` in a shell.
+
+    This script can be sourced, and your shell will get the
+    environment needed to run postgresql clients.  A command cannot
+    be specified when sourced.
+
+EOD
+  }
+
+  main() {
+    KEYNAME=''
+    REINVOKED=''
+
+    OPTS=$(getopt -o k:h --long key:reinvoked,help -n "$0" -- "$@")
+    eval set -- "$OPTS"
+    while :; do
+      case "$1" in
+        -k|--key)
+          KEYNAME="$2"
+          shift 2
+          ;;
+        -h|--help)
+          show_help
+          exit
+          ;;
+        --reinvoked)
+          REINVOKED=1
+          shift
+          ;;
+        --)
+          shift
+          break
+          ;;
+      esac
+    done
+
+    if [ -z "$KEYNAME" ] ; then
+      for ATTEMPT in $DEFAULT_KEYS ; do
+        if [ -f "/etc/ssl/metermd/$ATTEMPT.key" ]; then
+          KEYNAME="$ATTEMPT"
+          break
+        fi
+      done
+    fi
+
+    PGSSLMODE="verify-ca"
+    PGSSLROOTCERT="/etc/ssl/metermd/metermd-ca.crt"
+    PGSSLCERT="/etc/ssl/metermd/$KEYNAME.crt"
+    PGSSLKEY=$(copy_key "/etc/ssl/metermd/$KEYNAME.key")
+
+    [ -f "$PGSSLCERT" ] || fail "\$PGSSLCERT isnt a file: $PGSSLCERT"
+    [ -f "$PGSSLKEY" ]  || fail "\$PGSSLKEY isnt a file: $PGSSLKEY"
+
+    export PGSSLMODE
+    export PGSSLROOTCERT
+    export PGSSLCERT
+    export PGSSLKEY
+
+    if [ "$#" -eq "0" ] ; then
+      # sed pattern turns:
+      #   NAME=value
+      # into:
+      #   export NAME="value"
+      env | grep '^PGSSL' | sed -r -e 's/^([^=]+=)/\1"/g; s/$/"/g; s/^/export /g'
+    else
+      [ -z "$REINVOKED" ] || fail "cant specify command when sourced"
+      exec "$@"
+    fi
+  }
+
+  main "$@"
+else
+  RESULT=$("${BASH_SOURCE[0]}" "$@")
+  if [ $? -eq 0 ]; then
+    eval "$RESULT"
+    return 0
+  else
+    printf "%s" "$RESULT" >&2
+    return 1
   fi
-
-  echo "$USER_KEY"
-}
-
-
-KEYNAME="$1"
-if [ -z "$KEYNAME" ] ; then
-  for ATTEMPT in $DEFAULT_KEYS ; do
-    if [ -f "/etc/ssl/metermd/$ATTEMPT.key" ]; then
-      KEYNAME="$ATTEMPT"
-      break
-    fi
-  done
 fi
-
-
-PGSSLMODE="verify-ca"
-PGSSLROOTCERT="/etc/ssl/metermd/metermd-ca.crt"
-PGSSLCERT="/etc/ssl/metermd/$KEYNAME.crt"
-PGSSLKEY=$(copy_key "/etc/ssl/metermd/$KEYNAME.key")
-
-[ -f "$PGSSLCERT" ] || return fail "\$PGSSLCERT isnt a file: $PGSSLCERT"
-[ -f "$PGSSLKEY" ]  || return fail "\$PGSSLKEY isnt a file: $PGSSLKEY"
-
-export PGSSLMODE
-export PGSSLROOTCERT
-export PGSSLCERT
-export PGSSLKEY
-
-env | grep '^PGSSL' | cat
-
-return 0

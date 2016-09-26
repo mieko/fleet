@@ -9,6 +9,7 @@ shopt -s nullglob
 #
 # Volumes are added to the fstab, so they'll re-mount on reboot.
 
+# TODO: It'd be nice if node.provider.volume_glob existed.
 PREFIX="/dev/disk/by-id/scsi-0DO_Volume_"
 
 for DISK in "$PREFIX"* ; do
@@ -17,7 +18,7 @@ for DISK in "$PREFIX"* ; do
     sudo mkfs.ext4 -F "$DISK"
   fi
 
-  VOLUME_NAME=$(echo "$DISK" | sed -e "s|^$PREFIX||")
+  VOLUME_NAME=$(echo "$DISK" | sed -r -e "s|^$PREFIX||")
   VOLUME="/mnt/$VOLUME_NAME"
 
   sudo mkdir -p "$VOLUME"

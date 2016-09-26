@@ -11,5 +11,5 @@ sudo ufw allow in https comment 'nginx: servicing public'
   sudo ufw allow out to <%= other.addr_from(node).e %> \
                      port 3000 \
                      from <%= node.addr_from(other).e %> \
-                     comment 'nginx: accessing upstream <%= other.name.dq %>'
+                     comment 'nginx: accessing <%= other.name.dq %>'
 <% end %>

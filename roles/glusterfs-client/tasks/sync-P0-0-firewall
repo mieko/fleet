@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 set -e
 
-<% ports = "111,24007:24017,49151:49161" %>
+<% ports = "24007:24017,49151:49161" %>
 
 sudo ufw-delete-by-comment 'glusterfs-client:'
 
 <% node.zone_peers.with(role: 'glusterfs-server').each do |other| %>
   sudo ufw allow out to <%= other.addr_from(node).e %> \
-                    proto tcp \
-                    port <%= ports %> \
-                    from <%= node.addr_from(other).e %> \
-                    comment 'glusterfs-client: allowing <%= other.name.dq %>'
+                     proto tcp \
+                     port <%= ports %> \
+                     from <%= node.addr_from(other).e %> \
+                     comment 'glusterfs-client: accessing <%= other.name.dq %>'
 <% end %>

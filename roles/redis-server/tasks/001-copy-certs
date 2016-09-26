@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -e
 
-sudo cp files/redis-server.pem /etc/ssl/metermd/
-sudo chown stunnel4:stunnel4 /etc/ssl/metermd/redis-server.pem
-sudo chmod u=r,go= /etc/ssl/metermd/redis-server.pem
+sudo cp files/redis-server.{crt,key} /etc/ssl/metermd/
+sudo chown stunnel4:stunnel4 /etc/ssl/metermd/redis-server.{crt,key}
+sudo chmod u=r,go= /etc/ssl/metermd/redis-server.{crt,key}

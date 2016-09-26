@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -e
 
-# Note: This is a shared task mean to be symlinked from dependent tasks
 [ -f /etc/ssl/glusterfs.ca ] || \
   sudo ln -s /etc/ssl/metermd/metermd-ca.crt /etc/ssl/glusterfs.ca

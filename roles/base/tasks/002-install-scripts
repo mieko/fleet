@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-sudo cp files/ufw-delete-by-comment /usr/local/bin
-sudo chmod +x /usr/local/bin/*
+SCRIPTS="ufw-delete-by-comment"
+
+for i in $SCRIPTS ; do
+  sudo cp "files/$i" /usr/local/bin/
+  sudo chmod +x "/usr/local/bin/$i"
+done

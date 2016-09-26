@@ -11,5 +11,5 @@ ZONE_LEADERS="$HOME/cult/zone-leaders"
 <% if leader_of.empty? %>
   rm -f "$ZONE_LEADERS"
 <% else %>
-  echo <%= leader_of.join(" ").e %> | tee "$ZONE_LEADERS"
+  echo <%= leader_of.join(" ").e %> | tee "$ZONE_LEADERS" > /dev/null
 <% end %>

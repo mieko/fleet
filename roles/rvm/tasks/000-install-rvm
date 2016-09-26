@@ -10,8 +10,11 @@ set -e
   sudo cp files/rvm.{sh,asc} /usr/local/share/rvm-installer/
   sudo chmod +x /usr/local/share/rvm-installer/rvm.sh
 <% else %>
+
+  # If the we specified a user, re-exec this script as that user
   <% if (rvm_user = node.definition['rvm_user']) %>
-    [[ "$USER" == <%= rvm_user.e %> ]] || exec sudo -H -u <%= rvm_user.e %> -- "$0" "$@"
+    [[ "$USER" == <%= rvm_user.e %> ]] || \
+      exec sudo -H -u <%= rvm_user.e %> -- "$0" "$@"
   <% end %>
 
   gpg --import /usr/local/share/rvm-installer/rvm.asc
@@ -20,7 +23,7 @@ set -e
   <% if (rvm_use = node.definition['rvm_ruby']) %>
     hash -r
     source "$HOME/.rvm/scripts/rvm"
-    rvm install <%= rvm_use.to_s.e %> --default
-    rvm use <%= rvm_use.to_s.e %> --default
+    rvm install <%= rvm_use.e %>
+    rvm use <%= rvm_use.e %> --default
   <% end %>
 <% end %>

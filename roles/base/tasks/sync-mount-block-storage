@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
 set -e
 
-<% if node.provider.driver == 'digital-ocean' %>
-  PREFIX='/dev/disk/by-id/scsi-0DO_Volume_'
-<% elsif node.provider.driver == 'linode' %>
-  PREFIX=''
-<% elsif node.provider.driver == 'vultr' %>
-  PREFIX=''
-<% end %>
+# FIXME: Another use for node.provider.volume_glob

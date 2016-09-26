@@ -4,7 +4,7 @@ set -e
 # We move root's authorized_keys to a new 'cult' user, disable the root account,
 # and give 'cult' sudo superpowers.
 
-adduser --disabled-password --gecos 'Cult Deployment Account' cult
+adduser --disabled-password --gecos 'Cult Deployment User' cult
 
 mkdir -p /home/cult/.ssh
 mv "$HOME/.ssh/authorized_keys" /home/cult/.ssh
@@ -16,6 +16,7 @@ echo 'cult ALL=(ALL) NOPASSWD:ALL' > /etc/sudoers.d/cult-nopasswd
 
 # disable root account
 passwd -l root
-sed -i.bak -e 's/^PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config
+sed -i.bak -e 's/^PermitRootLogin.*/PermitRootLogin no/' \
+           /etc/ssh/sshd_config > /dev/null
 
 systemctl reload sshd

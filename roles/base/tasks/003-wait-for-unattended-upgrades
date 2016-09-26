@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Waiting for dpkg lock"
-while [[ -f /var/lib/dpkg/lock && $(sudo cat /var/lib/dpkg/lock) != '' ]] ; do
-  sleep 1
-done
+wait_for() {
+  while :; do
+    RUNNING=""
+    for i in "$@" ; do
+      pgrep "$i" && RUNNING="$i $RUNNING"
+    done
+
+    [ -z "$RUNNING" ] && break
+    echo "waiting for processes to end: $RUNNING"
+    sleep 1
+  done
+}
+
+wait_for unattended-upgrades

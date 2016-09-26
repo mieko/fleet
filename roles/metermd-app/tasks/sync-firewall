@@ -6,5 +6,5 @@ sudo ufw-delete-by-comment 'metermd-app:'
   sudo ufw allow in to <%= node.addr_from(other).e %> \
                     port 3000 \
                     from <%= other.addr_from(node).e %> \
-                    comment 'metermd-app: servicing frontend <%= other.name.dq %>'
+                    comment 'metermd-app: servicing <%= other.name.dq %>'
 <% end %>

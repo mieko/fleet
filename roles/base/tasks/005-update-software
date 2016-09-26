@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e
 
-echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
+echo 'debconf debconf/frontend select Noninteractive' | \
+  sudo debconf-set-selections
 
 # The default archives.ubuntu.org mirrors can sometimes have problems with
 # IPv6, e.g., just hanging.  We need to reconsider this occassionally and see
@@ -10,7 +11,7 @@ echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selecti
 #            b) archive.ubuntu.org never has this problem
 
 echo 'Acquire::ForceIPv4 "true";' | \
-  sudo tee -a /etc/apt/apt.conf.d/99force-ipv4 > /dev/null
+  sudo tee -a /etc/apt/apt.conf.d/99cult-force-ipv4
 
 sudo apt-get -yqq install apt-transport-https
 sudo apt-get -yqq update

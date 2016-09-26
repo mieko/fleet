@@ -5,4 +5,5 @@ sudo adduser --disabled-password \
              --gecos 'meter.md app server' \
              metermd
 
+# RVM requires us to be able to execute 'sudo apt-get' for its dependencies
 echo 'metermd ALL=NOPASSWD: /usr/bin/apt-get' | sudo tee /etc/sudoers.d/metermd

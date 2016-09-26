@@ -14,12 +14,12 @@ MAX_RETRIES=10
   if [ -f '/var/lib/postgresql/empty-cluster' ] ; then
     echo "Was an empty cluster.  Removing to prep for pg_basebackup"
 
-    sudo systemctl stop postgresql
-    while sudo ps aux | grep -v grep | grep -v cult | grep -q 'postgres\|pg_ctl' ; do
+    sudo systemctl stop postgresql || true
+    while pgrep 'postgres\|pg_ctl' ; do
       sleep 1
     done
 
-    eval $(sudo -i -u postgres pg-auth postgres-replication)
+    eval $(sudo -i -u postgres pg-auth -k postgres-replication)
 
     <%
       conn_info = "host=#{master.addr_from(node)} " +
@@ -29,7 +29,7 @@ MAX_RETRIES=10
                   "sslcert=$PGSSLCERT sslkey=$PGSSLKEY"
     %>
 
-    for i in $(seq 1 $MAX_RETRIES) ; do
+    for i in $(seq 1 "$MAX_RETRIES") ; do
       sudo bash -c "rm -rf $PGDATA/*"
       sudo -u postgres \
         pg_basebackup \
