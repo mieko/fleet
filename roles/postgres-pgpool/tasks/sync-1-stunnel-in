@@ -28,7 +28,7 @@ options = NO_TICKET
 
 # FIXME: see the note in pgpool-backends
 accept = 5432
-connect = /var/run/postgresql/.s.PGSQL.9090
+connect = /var/run/postgresql/.s.PGSQL.5433
 
 setuid = postgres
 STUNNEL

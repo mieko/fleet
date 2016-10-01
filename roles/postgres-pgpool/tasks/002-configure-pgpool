@@ -22,14 +22,13 @@ sudo sed -r -i.bak -e 's/^(ssl|backend|port|listen_addresses)/#\1/;' "$PPETC/pgp
 
 cat - <<PG_CONF | sudo tee -a "$PPETC/pgpool.conf"
 # GENERATED IN CULT PROJECT: <%= __FILE__ %>
-# FIXME: There is a bug in <= 3.5.3 that won't start with a blank listen_addresses,
-# so we just listen randomly (we're firewalled)
-listen_addresses = '*'
-port = 9090
+# Empty string means we only accept on the Unix socket.  Port still determines
+# the local socket filename, so changing it will require modification to stunnel
+# configuration.
+listen_addresses = ''
+port = 5433
 max_connections = 1
 
-# These aren't all accepted, but we hope they will be one day, and we keep
-# them here to tag.
 ssl = false
 PG_CONF
 

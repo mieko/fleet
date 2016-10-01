@@ -20,11 +20,15 @@ cat - <<HOSTS | tee "$CULTMAP" > /dev/null
 # cult: generated host map from <%= __FILE__ %>
 <% nodes.each do |n| %>
 <%
-  role_string = n.build_order.map do |r|
+  role_string = n.build_order.reject(&:node?).map do |r|
     (n.zone_leader?(r) ? '*' : '') + r.name
   end.join(' ')
+
+  additional_names = n.build_order.reject(&:node?).map do |r|
+    n.zone_leader?(r) ? "#{r.name}-ZL" : nil
+  end.compact.join(" ")
 %>
-<%= n.addr_from(node) %> <%= n.name %> # cult: <%= role_string %>
+<%= n.addr_from(node) %> <%= n.name %> <%= additional_names %> # cult: <%= role_string %>
 <% end %>
 HOSTS
 

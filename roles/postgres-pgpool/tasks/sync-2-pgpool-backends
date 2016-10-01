@@ -21,7 +21,7 @@ backend_hostname<%= i %> = '/var/run/stunnel@pgpool-out/<%=server.name %>/'
 backend_port<%= i %> = 5432
 backend_weight<%= i %> = 1
 # backend_data_directory<%= i %> = '/var/lib/pgsql/data'
-# backend_flag<%= i %> = 'ALLOW_TO_FAILOVER'
+backend_flag<%= i %> = 'ALLOW_TO_FAILOVER'
 
 <% end %>
 DYNAMIC_CONF
