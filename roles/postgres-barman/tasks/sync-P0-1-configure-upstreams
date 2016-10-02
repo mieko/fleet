@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+set -e -o pipefail
+
+create_slot() {
+  set +e
+  RESP=$(barman receive-wal --create-slot "$1" 2>&1)
+  set -e
+
+  if [ $? -eq "0" ] || echo "$RESP" | grep -q "already exists" ; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+<%
+  postgres_server = roles['postgres-server']
+
+  fail if postgres_server.nil?
+
+  servers = nodes.with(role: postgres_server).select do |n|
+    n.role_leader?(postgres_server)
+  end
+%>
+
+sudo rm -f /etc/barman.d/cult-*.conf
+
+<% servers.each do |server| %>
+<%
+  conninfo = {
+    host: server.addr_from(node),
+    user: 'backup',
+    dbname: 'postgres',
+    application_name: 'barman',
+    sslmode: 'verify-ca',
+    sslrootcert: '/etc/ssl/metermd/metermd-ca.crt',
+    sslcert: '/etc/ssl/metermd/postgres-backup.crt',
+    sslkey: '/etc/ssl/metermd/postgres-backup.key',
+  }.map {|k,v| "#{k}=#{v}"}.join(" ")
+%>
+
+FILENAME=<%= "/etc/barman.d/cult-#{server.name}.conf".e %>
+
+cat - <<EOD | sudo tee "$FILENAME"
+; <%= cultsrcid %>
+
+[<%= server.name %>]
+description = "Autoconfigured backup for <%= server.name.e %>"
+conninfo = <%= conninfo %>
+
+streaming_archiver = on
+streaming_conninfo = <%= conninfo %>
+slot_name = barman
+
+backup_method = postgres
+compression = gzip
+immediate_checkpoint = true
+basebackup_retry_times = 3
+streaming_backup_name = barman_streaming_backup
+
+; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; WAL streaming settings (via pg_receivexlog)
+; ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;streaming_archiver_name = barman_receive_wal
+;streaming_archiver_batch_size = 50
+EOD
+create_slot <%= server.name.e %>
+
+
+<% end %>

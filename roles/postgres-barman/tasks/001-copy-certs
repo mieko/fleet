@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+set -e
+
+sudo cp files/postgres-backup.{crt,key} /etc/ssl/metermd/
+sudo chown barman:barman /etc/ssl/metermd/postgres-backup.{crt,key}
+sudo chmod 0600 /etc/ssl/metermd/postgres-backup.{crt,key}

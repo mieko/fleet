@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -e
+
+sudo ufw-delete-by-comment 'postgres-barman:'
+
+<%
+  postgres_server = roles['postgres-server']
+  fail if postgres_server.nil?
+
+  servers = nodes.with(role: postgres_server).select do |n|
+    n.role_leader?(postgres_server)
+  end
+
+%>
+
+<% servers.each do |other| %>
+  sudo ufw allow out to <%= other.addr_from(node).q %> \
+                     port 5432 \
+                     from <%= node.addr_from(other).q %> \
+                     comment 'postgres-barman: accessing <%= other.name.q %>'
+<% end %>
