@@ -7,10 +7,11 @@ sudo ufw-delete-by-comment 'postgres-server:'
   clients = node.zone_peers.with(role: 'postgres-client')
   pgpools = node.zone_peers.with(role: 'postgres-pgpool')
   servers = node.zone_peers.with(role: 'postgres-server')
+  backups = node.peers.with(role: 'postgres-barman')
 
   # If we have pgpools, the clients should use them, not the server directly.
   downstreams = pgpools.empty? ? clients : pgpools
-  allowed_incoming = servers + downstreams
+  allowed_incoming = servers + downstreams + backups
 %>
 
 <% allowed_incoming.each do |other| %>

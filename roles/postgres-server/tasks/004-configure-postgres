@@ -6,24 +6,26 @@ PGETC=/etc/postgresql/<%= node.definition['pg_version'] %>/main
 # Note: we accept connections from anyone, but in practice:
 # the listen address is just on the smaller "sortranet".
 cat - <<PG_HBA | sudo tee -a "$PGETC/pg_hba.conf"
-# GENERATED IN CULT PROJECT: <%= __FILE__ %>
+# <%= cultsrcid %>
 hostssl  all          all          255.255.255.255/0  cert clientcert=1 map=cert
-hostssl  all          all          ::1/0              cert clientcert=1 map=cert
 
 # Allow replication using the same cert
 hostssl  replication  replication  255.255.255.255/0  cert clientcert=1 map=cert
-hostssl  replication  replication  ::1/0              cert clientcert=1 map=cert
+
+hostssl  replication backup  255.255.255.255/0  cert clientcert=1 map=cert
+hostssl  all         backup  255.255.255.255/0  cert clientcert=1 map=cert
 PG_HBA
 
 cat - <<PG_IDENT | sudo tee -a "$PGETC/pg_ident.conf"
-# GENERATED IN CULT PROJECT: <%= __FILE__ %>
+# <%= cultsrcid %>
 #
 # Keep in mind: pgpool represents itself as postgres-server because it has to
 # use the same key for clients and servers (it also has our key!)
 #
-cert             /postgres\-(client|server) metermd
 cert             /postgres\-(client|server) postgres
 cert             postgres-replication       replication
+cert             postgres-backup            backup
+cert             /postgres\-(client|server) metermd
 PG_IDENT
 
 # Comment out any SSL settings
@@ -34,7 +36,7 @@ sudo sed -i.bak -e 's/^ssl/#ssl/;' "$PGETC/postgresql.conf"
 %>
 
 cat - <<PG_CONF | sudo tee -a "$PGETC/postgresql.conf"
-# GENERATED IN CULT PROJECT: <%= __FILE__ %>
+# <%= cultsrcid %>
 listen_addresses = '*'
 ssl = true
 ssl_ca_file   = '/etc/ssl/metermd/metermd-ca.crt'
@@ -46,8 +48,9 @@ ssl_prefer_server_ciphers = on
 ssl_ecdh_curve = 'prime256v1'
 
 # Static, many overwritten in dynamic.conf
-max_connections = 300
+max_connections = 30
 max_wal_senders = 100
+max_replication_slots = 5
 wal_level = logical
 wal_keep_segments = 32
 wal_sender_timeout = 15s

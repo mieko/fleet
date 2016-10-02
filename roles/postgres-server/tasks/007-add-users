@@ -6,7 +6,6 @@ set -e
 source pg-auth -k postgres-server
 cat - <<SQL | psql
   CREATE ROLE replication WITH REPLICATION LOGIN;
-
-  CREATE ROLE metermd WITH SUPERUSER LOGIN;
+  CREATE ROLE backup WITH REPLICATION SUPERUSER LOGIN;
   CREATE DATABASE test OWNER postgres;
 SQL

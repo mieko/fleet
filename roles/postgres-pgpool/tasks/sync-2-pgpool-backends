@@ -10,7 +10,7 @@ set -e
 PPETC="/etc/pgpool2"
 
 cat - <<DYNAMIC_CONF | sudo tee "$PPETC/dynamic.conf"
-# GENERATED IN CULT PROJECT: <%= __FILE__ %>
+# <%= cultsrcid %>
 load_balance_mode = on
 master_slave_mode = on
 master_slave_sub_mode = 'stream'
